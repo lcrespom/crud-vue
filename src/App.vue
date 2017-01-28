@@ -1,11 +1,36 @@
 <template>
 	<div id="app">
-		<crud-table :config="tableConfig" :data="tableData" @edit="editRow" @remove="removeRow" />
+		<!-- Top navbar -->
+		<nav class="navbar navbar-inverse navbar-static-top">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="#">The CRUD Library</a>
+				</div>
+			</div>
+		</nav>
+		<!-- Container form menu and main -->
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-sm-3">
+					<!-- Menu goes here -->
+					<div class="well sidebar-nav">
+						<crud-menu :items="menuItems" cssClass="nav nav-list" />
+					</div>
+				</div>
+				<div class="col-sm-9">
+					<!-- Main goes here -->
+					<div class="well">
+						<crud-table :config="tableConfig" :data="tableData" @edit="editRow" @remove="removeRow" />
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 
 <script>
 import CrudTable from './components/CrudTable';
+import CrudMenu from './components/CrudMenu';
 
 function getTableConfig() {
 	const TABLE_FIELDS = ['date', 'description', 'amount', 'balance'];
@@ -25,14 +50,25 @@ function getTableData() {
 	];
 }
 
+function getMenuItems() {
+	return [
+		{ text: 'Books', route: '/books', icon: 'user' },
+		{ text: 'Authors', route: '/authors', icon: 'earphone'},
+		{ text: 'Members', route: '/members', icon: 'remove'},
+		{ text: 'Book items', route: '/items' },
+		{ text: 'Rentals', route: '/rentals' }
+	];
+}
+
 export default {
 	name: 'app',
 	components: {
-		CrudTable
+		CrudMenu, CrudTable
 	},
 	data: _ => ({
 		tableConfig: getTableConfig(),
-		tableData: getTableData()
+		tableData: getTableData(),
+		menuItems: getMenuItems()
 	}),
 	methods: {
 		editRow(row) {
@@ -51,5 +87,13 @@ export default {
 	margin: 0 1em;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+}
+.navbar-header, .navbar-brand {
+	width: 100%;
+	text-align: center;
+}
+.navbar-brand {
+	color: white !important;
+	font-size: 150%;
 }
 </style>

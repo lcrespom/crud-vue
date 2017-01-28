@@ -27,4 +27,20 @@ npm test
 For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
 
 ## ToDo
+- Implement example library
+	- Books
+	- Authors
+	- Members
+	- Book items
+	- Rentals (past, current, future reservations)
+- Setup main layout
+	- Left: side menu with all tables
+	- Right:
+		- Table with all items + search button + new button
+		- Item edit form
+- Generic components
+	- Table
+	- form
+	- Menu
+- Routing
 - Get JSON data from json-generator.com
