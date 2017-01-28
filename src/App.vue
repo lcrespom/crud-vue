@@ -9,17 +9,17 @@
 			</div>
 		</nav>
 		<!-- Container form menu and main -->
-		<div class="container-fluid">
+		<div id="crud-main" class="container-fluid">
 			<div class="row">
 				<div class="col-sm-3">
 					<!-- Menu goes here -->
-					<div class="well sidebar-nav">
+					<div id="crud-menu" class="well sidebar-nav">
 						<crud-menu :items="menuItems" cssClass="nav nav-list" />
 					</div>
 				</div>
 				<div class="col-sm-9">
 					<!-- Main goes here -->
-					<div class="well">
+					<div id="crud-content" class="well">
 						<crud-table :config="tableConfig" :data="tableData" @edit="editRow" @remove="removeRow" />
 					</div>
 				</div>
@@ -52,11 +52,11 @@ function getTableData() {
 
 function getMenuItems() {
 	return [
-		{ text: 'Books', route: '/books', icon: 'user' },
-		{ text: 'Authors', route: '/authors', icon: 'earphone'},
-		{ text: 'Members', route: '/members', icon: 'remove'},
-		{ text: 'Book items', route: '/items' },
-		{ text: 'Rentals', route: '/rentals' }
+		{ text: 'Books', route: '#books', icon: 'book' },
+		{ text: 'Authors', route: '#authors', icon: 'pencil'},
+		{ text: 'Members', route: '#members', icon: 'user'},
+		{ text: 'Book items', route: '#items', icon: 'list-alt' },
+		{ text: 'Rentals', route: '#rentals', icon: 'tag' }
 	];
 }
 
@@ -84,10 +84,16 @@ export default {
 <style>
 #app {
 	font-family: 'Avenir', Helvetica, Arial, sans-serif;
-	margin: 0 1em;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
+#crud-main {
+	margin: 0 1em;
+}
+#crud-menu {
+	padding: 9px 0;
+}
+/*#crud-content {}*/
 .navbar-header, .navbar-brand {
 	width: 100%;
 	text-align: center;
