@@ -39,8 +39,8 @@ For detailed explanation on how things work, checkout the [guide](http://vuejs-t
 		- Table with all items + search button + new button
 		- Item edit form
 - Generic components
-	- Table
+	- Table (WIP)
 	- form
-	- Menu
+	- ~~Menu~~
 - Routing
 - Get JSON data from json-generator.com

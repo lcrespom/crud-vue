@@ -2,7 +2,7 @@
 	<ul :class="cssClass">
 		<li v-for="item of items"
 			@click="selected = item"
-			:class="{ active: isActive(item) }"> <!--  routerLinkActive="active" -->
+			:class="{ active: isActive(item) }">
 			<a v-if="item.route" :href="item.route">
 				<span v-if="item.icon" :class="`glyphicon glyphicon-${item.icon}`"
 					aria-hidden="true">&nbsp;</span>

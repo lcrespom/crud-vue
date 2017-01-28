@@ -87,9 +87,7 @@ export default {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
-#crud-main {
-	margin: 0 1em;
-}
+/*#crud-main {}*/
 #crud-menu {
 	padding: 9px 0;
 }
