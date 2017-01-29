@@ -46,6 +46,7 @@ function getFormattedField(fld, meta) {
 	return thandler.cellRender(fld, meta);
 }
 
+
 export default {
 	props: {
 		data: Array,

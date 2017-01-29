@@ -48,11 +48,14 @@ export default {
 			getAll: 'get/EJp007vDG'
 		},
 		table: {
-			fields: ['name.first', 'name.last', 'email', 'phone', 'birth'],
-			labels: ['Name', 'Surname', 'e-mail', 'Phone', 'Birth'],
+			fields: ['name', 'email', 'phone', 'birth'],
+			labels: ['Name', 'e-mail', 'Phone', 'Birth'],
 			buttons: [editButton, removeButton]
 		},
 		meta: {
+			name: {
+				cellRender: name => name.first + ' ' + name.last
+			},
 			birth: {
 				type: 'date'
 			},
@@ -91,4 +94,9 @@ export default {
 		when tableFields or formFields are not present
 	- labels (array): labels to be used
 	- buttons (array): buttons to be used in table
+
+	- Field meta:
+		- type: string, date, time, email, select, or custom-registered type handler
+		- listData: array of value/label pairs used by the 'select' type
+		- cellRender: custom cell rendering function
 */
