@@ -25,8 +25,8 @@ function prepareConfig(config) {
 		let cfg = config[entity];
 		// API
 		cfg.api = cfg.api || {};
-		cfg.api.handler = cfg.api.handler || cfg._apiHandler || crudApi;
-		cfg.api.prefix = cfg.api.prefix || cfg._apiPrefix;
+		cfg.api.handler = cfg.api.handler || config._apiHandler || crudApi;
+		cfg.api.prefix = cfg.api.prefix || config._apiPrefix;
 		cfg.api.getAll = cfg.api.getAll || entity;
 		cfg.api.put = cfg.api.put || entity;
 		cfg.api.post = cfg.api.post || entity;
@@ -53,17 +53,21 @@ const container = {
 		prepareConfig(this.config);
 	},
 	data: _ => ({
-		routerData
+		routerData,
+		tableData: []
 	}),
 	computed: {
 		cfg() {
 			return this.config[this.routerData.route.slice(1)];
-		},
-		tableData() {
-			if (!this.cfg) return;
-			let api = this.cfg.api.handler;
+		}
+	},
+	watch: {
+		cfg(cfg) {
+			if (!cfg) return;
+			let api = cfg.api.handler;
 			console.log(`>>> api.getAll('${this.routerData.route}')`);
-			return api.getAll(this.cfg, this.routerData.route);
+			api.getAll(this.cfg.api, this.routerData.route)
+			.then(json => this.tableData = json);
 		}
 	},
 	methods: {
