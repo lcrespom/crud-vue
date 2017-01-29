@@ -55,4 +55,7 @@ For detailed explanation on how things work, checkout the [guide](http://vuejs-t
 		- Select
 		- Date
 		- etc
+	- Computed fields, used in table column and readonly
+		- For example: fullName = first + ' ' + last;
 	- ~~Nested fields, e.g. author.name.first~~
+	- HTML cell rendering for validated data (e.g. e-mail with `<a href="mailto:...">`)

@@ -4,7 +4,7 @@
 		<nav class="navbar navbar-inverse navbar-static-top">
 			<div class="container-fluid">
 				<div class="navbar-header">
-					<a class="navbar-brand" href="#"><b>The CRUD Library</b></a>
+					<a class="navbar-brand" href="/"><b>The CRUD Library</b></a>
 				</div>
 			</div>
 		</nav>

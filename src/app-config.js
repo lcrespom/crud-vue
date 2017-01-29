@@ -11,8 +11,20 @@ export default {
 		table: {
 			fields: 'title author genre'.split(' '),
 			buttons: [editButton, removeButton]
+		},
+		meta: {
+			genre: {
+				type: 'select',
+				listData: [
+					{ value: 'FAN', label: 'Fantasy' },
+					{ value: 'SF', label: 'Science fiction' },
+					{ value: 'WE', label: 'Western' },
+					{ value: 'MY', label: 'Mystery' }
+				]
+			}
 		}
 	},
+
 	authors: {
 		api: {
 			getAll: 'get/VkaDRWPDz'
@@ -20,6 +32,33 @@ export default {
 		table: {
 			fields: ['name.first', 'name.last', 'birth', 'death'],
 			labels: ['Name', 'Surname', 'Birth', 'Death']
+		},
+		meta: {
+			birth: {
+				type: 'date'
+			},
+			death: {
+				type: 'date'
+			}
+		}
+	},
+
+	members: {
+		api: {
+			getAll: 'get/EJp007vDG'
+		},
+		table: {
+			fields: ['name.first', 'name.last', 'email', 'phone', 'birth'],
+			labels: ['Name', 'Surname', 'e-mail', 'Phone', 'Birth'],
+			buttons: [editButton, removeButton]
+		},
+		meta: {
+			birth: {
+				type: 'date'
+			},
+			email: {
+				type: 'email'
+			}
 		}
 	}
 };

@@ -46,6 +46,10 @@ function prepareConfig(config) {
 		cfg.form = cfg.form || {};
 		cfg.form.fields = cfg.form.fields || cfg.fields;
 		cfg.form.labels = cfg.form.labels || cfg.labels || fields2labels(cfg.form.fields);
+		// Meta
+		cfg.meta = cfg.meta || {};
+		cfg.table.meta = cfg.meta;
+		cfg.form.meta = cfg.meta;
 	}
 }
 

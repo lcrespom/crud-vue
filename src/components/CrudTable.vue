@@ -28,12 +28,22 @@
 
 <script>
 import { validateTypes } from '../utils/cmp-helpers';
+import typeHandlers from '../utils/types';
+
 
 function getNestedField(obj, path) {
 	return path.split('.').reduce(
 		(prev, curr) => prev ? prev[curr] : undefined,
 		obj
 	);
+}
+
+function getFormattedField(fld, meta) {
+	if (meta && meta.cellRender)
+		return meta.cellRender(fld);
+	let type = meta && meta.type ? meta.type : 'string';
+	let thandler = typeHandlers[type];
+	return thandler.cellRender(fld, meta);
 }
 
 export default {
@@ -63,7 +73,8 @@ export default {
 			this.$emit(event, row);
 		},
 		getField(row, col) {
-			return getNestedField(row, col);
+			let fld = getNestedField(row, col);
+			return getFormattedField(fld, this.config.meta[col]);
 		},
 	},
 
