@@ -18,6 +18,11 @@ import crudApi from '../utils/crud-api';
 import CrudTable from './CrudTable';
 
 
+function fields2labels(fields) {
+	if (!fields) return null;
+	return fields.map(ucfirst);
+}
+
 function prepareConfig(config) {
 	for (let entity of Object.keys(config)) {
 		if (entity.charAt(0) == '_') continue;
@@ -35,12 +40,12 @@ function prepareConfig(config) {
 		// Table
 		cfg.table = cfg.table || {};
 		cfg.table.fields = cfg.table.fields || cfg.fields;
-		cfg.table.labels = cfg.table.labels || cfg.labels;
-		cfg.table.buttons = cfg.table.buttons || cfg.buttons;
+		cfg.table.labels = cfg.table.labels || cfg.labels || fields2labels(cfg.table.fields);
+		cfg.table.buttons = cfg.table.buttons || cfg.buttons || [];
 		// Form
 		cfg.form = cfg.form || {};
 		cfg.form.fields = cfg.form.fields || cfg.fields;
-		cfg.form.labels = cfg.form.labels || cfg.labels;
+		cfg.form.labels = cfg.form.labels || cfg.labels || fields2labels(cfg.form.fields);
 	}
 }
 
@@ -48,6 +53,8 @@ function runApi(cfg, route, vm) {
 	if (!cfg) return;
 	let api = cfg.api.handler;
 	console.log(`>>> api.getAll('${route}')`);
+	vm.tableData = [];
+	// ToDo: open "Loading..." popup
 	api.getAll(cfg.api, route)
 	.then(json => vm.tableData = json);
 }

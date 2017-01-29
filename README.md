@@ -34,7 +34,7 @@ For detailed explanation on how things work, checkout the [guide](http://vuejs-t
 	- Book items
 	- Rentals (past, current, future reservations)
 - Setup main layout
-	- Left: side menu with all tables
+	- ~~Left: side menu with all tables~~
 	- Right:
 		- Table with all items + search button + new button
 		- Item edit form
@@ -42,5 +42,17 @@ For detailed explanation on how things work, checkout the [guide](http://vuejs-t
 	- Table (WIP)
 	- form
 	- ~~Menu~~
+	- Popup
+		- Loading... => open it when using the REST API
+		- Alert
+		- Confirm (yes/no)
+		- Prompt
 - Routing
 - Get JSON data from json-generator.com
+- Flexible configuration
+	- Non-string types
+		- Number
+		- Select
+		- Date
+		- etc
+	- ~~Nested fields, e.g. author.name.first~~

@@ -20,14 +20,21 @@
 						<span /> <!-- some breathing space between buttons -->
 					</template>
 				</td>
-				<td v-for="col of config.fields">{{row[col]}}</td>
+				<td v-for="col of config.fields">{{getField(row, col)}}</td>
 			</tr>
 		</tbody>
 	</table>
 </template>
 
 <script>
-import { validateTypes, ucfirst } from '../utils/cmp-helpers';
+import { validateTypes } from '../utils/cmp-helpers';
+
+function getNestedField(obj, path) {
+	return path.split('.').reduce(
+		(prev, curr) => prev ? prev[curr] : undefined,
+		obj
+	);
+}
 
 export default {
 	props: {
@@ -45,19 +52,19 @@ export default {
 		}
 	},
 
-	data: function() {
-		let cfg = this.config;
-		cfg.buttons = cfg.buttons || [];
-		cfg.labels = cfg.labels || cfg.fields.map(ucfirst);
-		return {
-			hasButtons: cfg.buttons.length > 0
-		};
+	computed: {
+		hasButtons() {
+			return this.config.buttons.length > 0;
+		}
 	},
 
 	methods: {
 		action(event, row) {
 			this.$emit(event, row);
-		}
+		},
+		getField(row, col) {
+			return getNestedField(row, col);
+		},
 	},
 
 	helpers: {

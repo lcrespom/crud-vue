@@ -1,6 +1,6 @@
 import CrudTable from './components/CrudTable';
-
 let { editButton, removeButton } = CrudTable.helpers;
+
 
 export default {
 	_apiPrefix: 'http://beta.json-generator.com/api/json/',
@@ -11,6 +11,15 @@ export default {
 		table: {
 			fields: 'title author genre'.split(' '),
 			buttons: [editButton, removeButton]
+		}
+	},
+	authors: {
+		api: {
+			getAll: 'get/VkaDRWPDz'
+		},
+		table: {
+			fields: ['name.first', 'name.last', 'birth', 'death'],
+			labels: ['Name', 'Surname', 'Birth', 'Death']
 		}
 	}
 };
