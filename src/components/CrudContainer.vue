@@ -8,7 +8,6 @@
 			<crud-table :config="cfg.table" :data="tableData" @edit="editRow" @remove="removeRow" />
 		</template>
 		<span v-else>No config for {{routerData.route}}</span>
-		<!--<p>Current route: {{routerData.route}}</p>-->
 	</div>
 </template>
 
@@ -45,6 +44,14 @@ function prepareConfig(config) {
 	}
 }
 
+function runApi(cfg, route, vm) {
+	if (!cfg) return;
+	let api = cfg.api.handler;
+	console.log(`>>> api.getAll('${route}')`);
+	api.getAll(cfg.api, route)
+	.then(json => vm.tableData = json);
+}
+
 
 const container = {
 	components: { CrudTable },
@@ -58,16 +65,10 @@ const container = {
 	}),
 	computed: {
 		cfg() {
-			return this.config[this.routerData.route.slice(1)];
-		}
-	},
-	watch: {
-		cfg(cfg) {
-			if (!cfg) return;
-			let api = cfg.api.handler;
-			console.log(`>>> api.getAll('${this.routerData.route}')`);
-			api.getAll(this.cfg.api, this.routerData.route)
-			.then(json => this.tableData = json);
+			let route = this.routerData.route;
+			let cfg = this.config[route.slice(1)];
+			runApi(cfg, route, this);
+			return cfg;
 		}
 	},
 	methods: {
