@@ -1,18 +1,39 @@
 <template>
 	<div>
+		<!-- Generic home -->
 		<div v-if="routerData.route=='/'">
 			<h2>Welcome</h2>
 		</div>
+		<!-- Route found -->
 		<template v-else-if="cfg">
-			<h2>{{cfg.title}}</h2>
-			<crud-table :config="cfg.table" :data="tableData" @edit="editRow" @remove="removeRow" />
+			<!-- Table -->
+			<template v-if="editMode == 'table'">
+				<h2 class="entity-title">{{cfg.title}}</h2>
+				<span class="table-title-buttons">
+					<button accesskey="B" class="btn btn-info">
+						<span aria-hidden="true" class="glyphicon glyphicon-search"></span>
+						Search
+					</button>
+					&nbsp;
+					<a class="btn btn-primary" @click="newRow" :href="routerData.route + '/new'">
+						<span aria-hidden="true" class="glyphicon glyphicon-plus"></span>
+						New
+					</a>
+				</span>
+				<crud-table :config="cfg.table" :data="tableData" @edit="editRow" @remove="removeRow" />
+			</template>
+			<!-- Form -->
+			<template v-else>
+				ToDo: Form for {{routerData.route}}
+			</template>
 		</template>
+		<!-- No route found -->
 		<span v-else>No config for {{routerData.route}}</span>
 	</div>
 </template>
 
 <script>
-import { routerData } from '../utils/router';
+import { routerData, setRoute } from '../utils/router';
 import { ucfirst } from '../utils/cmp-helpers';
 import crudApi from '../utils/crud-api';
 import CrudTable from './CrudTable';
@@ -53,7 +74,16 @@ function prepareConfig(config) {
 	}
 }
 
-function runApi(cfg, route, vm) {
+function getEditMode(config, route) {
+	let parts = route.split('/');
+	let end = parts.pop();
+	let prev = parts.pop();
+	if (end == 'new') return [prev, 'form-new'];
+	if (prev && config[prev]) return [prev, 'form-edit', end];
+	return [end, 'table'];
+}
+
+function runApi(cfg, route, vm, id) {
 	if (!cfg) return;
 	let api = cfg.api.handler;
 	console.log(`>>> api.getAll('${route}')`);
@@ -72,13 +102,15 @@ const container = {
 	},
 	data: _ => ({
 		routerData,
-		tableData: []
+		tableData: [],
+		editMode: ''
 	}),
 	computed: {
 		cfg() {
-			let route = this.routerData.route;
-			let cfg = this.config[route.slice(1)];
-			runApi(cfg, route, this);
+			let [route, mode, id] = getEditMode(this.config, this.routerData.route);
+			this.editMode = mode;
+			let cfg = this.config[route];
+			runApi(cfg, route, this, id);
 			return cfg;
 		}
 	},
@@ -88,6 +120,9 @@ const container = {
 		},
 		removeRow(row) {
 			console.log('Remove:', JSON.stringify(row, null, 2));
+		},
+		newRow(event) {
+			setRoute(event, this.routerData.route + '/new');
 		}
 	}
 };
@@ -95,4 +130,10 @@ export default container;
 </script>
 
 <style>
+.entity-title {
+	display: inline;
+}
+.table-title-buttons {
+	float: right;
+}
 </style>
