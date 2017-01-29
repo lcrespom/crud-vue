@@ -21,6 +21,7 @@
 					<!-- Main goes here -->
 					<div id="crud-content" class="well">
 						<crud-table :config="tableConfig" :data="tableData" @edit="editRow" @remove="removeRow" />
+						<crud-container />
 					</div>
 				</div>
 			</div>
@@ -31,6 +32,8 @@
 <script>
 import CrudTable from './components/CrudTable';
 import CrudMenu from './components/CrudMenu';
+import CrudContainer from './components/CrudContainer';
+import { routerData } from './utils/router';
 
 function getTableConfig() {
 	const TABLE_FIELDS = ['date', 'description', 'amount', 'balance'];
@@ -52,23 +55,24 @@ function getTableData() {
 
 function getMenuItems() {
 	return [
-		{ text: 'Books', route: '#books', icon: 'book' },
-		{ text: 'Authors', route: '#authors', icon: 'pencil'},
-		{ text: 'Members', route: '#members', icon: 'user'},
-		{ text: 'Book items', route: '#items', icon: 'list-alt' },
-		{ text: 'Rentals', route: '#rentals', icon: 'tag' }
+		{ text: 'Books', route: '/books', icon: 'book' },
+		{ text: 'Authors', route: '/authors', icon: 'pencil'},
+		{ text: 'Members', route: '/members', icon: 'user'},
+		{ text: 'Book items', route: '/items', icon: 'list-alt' },
+		{ text: 'Rentals', route: '/rentals', icon: 'tag' }
 	];
 }
 
 export default {
 	name: 'app',
 	components: {
-		CrudMenu, CrudTable
+		CrudMenu, CrudTable, CrudContainer
 	},
 	data: _ => ({
 		tableConfig: getTableConfig(),
 		tableData: getTableData(),
-		menuItems: getMenuItems()
+		menuItems: getMenuItems(),
+		routerData
 	}),
 	methods: {
 		editRow(row) {

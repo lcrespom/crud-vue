@@ -1,9 +1,8 @@
 <template>
 	<ul :class="cssClass">
 		<li v-for="item of items"
-			@click="selected = item"
 			:class="{ active: isActive(item) }">
-			<a v-if="item.route" :href="item.route">
+			<a v-if="item.route" :href="item.route" @click="itemClicked(item, $event)">
 				<span v-if="item.icon" :class="`glyphicon glyphicon-${item.icon}`"
 					aria-hidden="true">&nbsp;</span>
 				{{item.text}}
@@ -14,19 +13,22 @@
 </template>
 
 <script>
+import { routerData, setRoute } from '../utils/router';
+
 export default {
 	props: {
 		cssClass: String,
 		items: Array
 	},
 	data: function() {
-		return { selected: null };
+		return { routerData };
 	},
 	methods: {
 		isActive(item) {
-			return this.selected
-				? this.selected == item
-				: item.route == location.hash;
+			return routerData.route == item.route;
+		},
+		itemClicked(item, event) {
+			setRoute(event, item.route);
 		}
 	}
 };
