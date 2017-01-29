@@ -19,34 +19,51 @@ import crudApi from '../utils/crud-api';
 import CrudTable from './CrudTable';
 
 
+function prepareConfig(config) {
+	for (let entity of Object.keys(config)) {
+		if (entity.charAt(0) == '_') continue;
+		let cfg = config[entity];
+		// API
+		cfg.api = cfg.api || {};
+		cfg.api.handler = cfg.api.handler || cfg._apiHandler || crudApi;
+		cfg.api.prefix = cfg.api.prefix || cfg._apiPrefix;
+		cfg.api.getAll = cfg.api.getAll || entity;
+		cfg.api.put = cfg.api.put || entity;
+		cfg.api.post = cfg.api.post || entity;
+		cfg.api.delete = cfg.api.delete || entity;
+		// Title
+		cfg.title = cfg.title || ucfirst(entity);
+		// Table
+		cfg.table = cfg.table || {};
+		cfg.table.fields = cfg.table.fields || cfg.fields;
+		cfg.table.labels = cfg.table.labels || cfg.labels;
+		cfg.table.buttons = cfg.table.buttons || cfg.buttons;
+		// Form
+		cfg.form = cfg.form || {};
+		cfg.form.fields = cfg.form.fields || cfg.fields;
+		cfg.form.labels = cfg.form.labels || cfg.labels;
+	}
+}
+
 
 const container = {
 	components: { CrudTable },
 	props: ['config'],
+	created() {
+		prepareConfig(this.config);
+	},
 	data: _ => ({
 		routerData
 	}),
 	computed: {
 		cfg() {
-			let name = this.routerData.route.slice(1);
-			let cfg = this.config[name];
-			if (!cfg) return cfg;
-			return {
-				title: cfg.title = cfg.title || ucfirst(name),
-				table: {
-					fields: cfg.tableFields || cfg.fields,
-					labels: cfg.tableLabels || cfg.labels,
-					buttons: cfg.buttons
-				},
-				form: {
-					fields: cfg.formFields || cfg.fields,
-					labels: cfg.formLabels || cfg.labels
-				}
-			};
+			return this.config[this.routerData.route.slice(1)];
 		},
 		tableData() {
-			console.log(`>>> crudApi.getAll('${this.routerData.route}')`);
-			return crudApi.getAll(this.routerData.route);
+			if (!this.cfg) return;
+			let api = this.cfg.api.handler;
+			console.log(`>>> api.getAll('${this.routerData.route}')`);
+			return api.getAll(this.cfg, this.routerData.route);
 		}
 	},
 	methods: {
