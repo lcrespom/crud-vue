@@ -57,5 +57,4 @@ For detailed explanation on how things work, checkout the [guide](http://vuejs-t
 		- etc
 	- ~~Computed fields, used in table column and readonly~~
 	- ~~Nested fields, e.g. author.name.first~~
-	- HTML cell rendering for validated data (e.g. e-mail with `<a href="mailto:...">`)
-		- See https://vuejs.org/v2/guide/syntax.html#Raw-HTML
+	- ~~HTML cell rendering for validated data (e.g. e-mail with `<a href="mailto:...">`)~~

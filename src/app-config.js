@@ -98,5 +98,11 @@ export default {
 	- Field meta:
 		- type: string, date, time, email, select, or custom-registered type handler
 		- listData: array of value/label pairs used by the 'select' type
-		- cellRender: custom cell rendering function
+		- cellRender: custom cell rendering function. Returns plain text.
+		- cellRenderHTML: custom cell rendering function that returns HTML.
+			=> Rendering user-provided content in HTML should be avoided,
+				see https://vuejs.org/v2/guide/syntax.html#Raw-HTML.
+				Whenever possible, use the cellRenderNode alternative instead.
+		- cellRenderNode: custom cell rendering function that returns a
+			virtual DOM node.
 */

@@ -18,13 +18,12 @@ const thTime = {
 };
 
 const thEmail = {
-	cellRender(email, meta) {
+	cellRenderHTML(email, meta) {
 		if (!email) return '';
-		if (!email.match(/^[a-zA-Z0-9\.\-]+@[a-zA-Z0-9\.\-]+$/)) return email;
+		if (!email.match(/^[a-zA-Z0-9\.\-]+@[a-zA-Z0-9\.\-]+$/)) return null;
 		let parts = email.split('@');
 		let sepEmail = parts[0] + '\u200B@' + parts[1];
-		return sepEmail;
-		// return '<a href="mailto:' + email + '" target="_blank">' + sepEmail + '</a>';
+		return '<a href="mailto:' + email + '" target="_blank">' + sepEmail + '</a>';
 	}
 };
 
