@@ -20,7 +20,9 @@
 						<span /> <!-- some breathing space between buttons -->
 					</template>
 				</td>
-				<td v-for="col of config.fields">{{getField(row, col)}}</td>
+				<template v-for="col of config.fields">
+					<td>{{getField(row, col)}}</td>
+				</template>
 			</tr>
 		</tbody>
 	</table>
