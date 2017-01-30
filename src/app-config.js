@@ -31,7 +31,9 @@ export default {
 		},
 		table: {
 			fields: ['name.first', 'name.last', 'birth', 'death'],
-			labels: ['Name', 'Surname', 'Birth', 'Death']
+			labels: ['Name', 'Surname', 'Birth', 'Death'],
+			hdrClasses: ['', '', 'text-right', 'text-right'],
+			cellClasses: ['', '', 'text-right', 'text-right']
 		},
 		meta: {
 			birth: {
@@ -50,6 +52,8 @@ export default {
 		table: {
 			fields: ['name', 'email', 'phone', 'birth'],
 			labels: ['Name', 'e-mail', 'Phone', 'Birth'],
+			hdrClasses: ['', 'text-center', 'text-center', 'text-right'],
+			cellClasses: ['', 'text-center', 'text-center', 'text-right'],
 			buttons: [editButton, removeButton]
 		},
 		meta: {
@@ -90,10 +94,15 @@ export default {
 	- formLables (array): labels to be used in form.
 		If not present, fields are capitalized and used as labels.
 
-	- fields (array): fields to be used in table and form,
-		when tableFields or formFields are not present
-	- labels (array): labels to be used
-	- buttons (array): buttons to be used in table
+	- table:
+		- fields (array): fields to be used in table when tableFields are not present
+		- labels (array): labels to be used in table when tableLables are not present
+		- buttons (array): buttons to be used in table
+		- hdrClasses (array): classes to apply to header cells
+		- cellClasses (array): classes to apply to data cells
+	- form:
+		- fields (array): fields to be used in form when formFields are not present
+		- labels (array): labels to be used in form when formLables are not present
 
 	- Field meta:
 		- type: string, date, time, email, select, or custom-registered type handler

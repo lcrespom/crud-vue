@@ -6,7 +6,7 @@
 		<thead>
 			<tr>
 				<th v-if="hasButtons" class="text-center">Action</th>
-				<th v-for="col of config.labels">{{col}}</th>
+				<th v-for="(col, idx) of config.labels" :class="getHeaderClass(idx)">{{col}}</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -20,8 +20,8 @@
 						<span /> <!-- some breathing space between buttons -->
 					</template>
 				</td>
-				<crud-table-cell v-for="col of config.fields"
-					:row="row" :col="col" :meta="config.meta" />
+				<crud-table-cell v-for="(col, idx) of config.fields"
+					:row="row" :col="col" :config="config" :idx="idx" />
 			</tr>
 		</tbody>
 	</table>
@@ -58,6 +58,10 @@ export default {
 	methods: {
 		action(event, row) {
 			this.$emit(event, row);
+		},
+		getHeaderClass(idx) {
+			let hdrClasses = this.config.hdrClasses || [];
+			return hdrClasses[idx] || '';
 		}
 	},
 
