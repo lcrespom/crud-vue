@@ -28,9 +28,9 @@ For detailed explanation on how things work, checkout the [guide](http://vuejs-t
 
 ## ToDo
 - Implement example library
-	- Books
-	- Authors
-	- Members
+	- ~~Books~~
+	- ~~Authors~~
+	- ~~Members~~
 	- Book items
 	- Rentals (past, current, future reservations)
 - Setup main layout
@@ -39,9 +39,9 @@ For detailed explanation on how things work, checkout the [guide](http://vuejs-t
 		- Table with all items + search button + new button
 		- Item edit form
 - Generic components
-	- Table (WIP)
-	- form
 	- ~~Menu~~
+	- ~~Table~~
+	- Form
 	- Popup
 		- Loading... => open it when using the REST API
 		- Alert
@@ -52,8 +52,8 @@ For detailed explanation on how things work, checkout the [guide](http://vuejs-t
 - Flexible configuration
 	- Non-string types
 		- Number
-		- Select
-		- Date
+		- Select (table: done, form: pending)
+		- Date (table: done, form: pending)
 		- etc
 	- ~~Computed fields, used in table column and readonly~~
 	- ~~Nested fields, e.g. author.name.first~~

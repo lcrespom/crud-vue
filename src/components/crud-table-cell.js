@@ -5,11 +5,19 @@ export default {
 	functional: true,
 	props: ['row', 'col', 'config', 'idx'],
 	render: function (h, ctx) {
-		let meta = ctx.props.config.meta[ctx.props.col];
+		let fld = getNestedField(ctx.props.row, ctx.props.col);
+		let meta = ctx.props.config.meta[ctx.props.col] || {};
+		// Get cell class
 		let classes = ctx.props.config.cellClasses || [];
 		let clz = classes[ctx.props.idx] || '';
-		let fld = getNestedField(ctx.props.row, ctx.props.col);
+		let dynClassF = getMetaProp(meta, 'cellClass');
+		if (dynClassF) {
+			let dynClass = dynClassF(fld, meta);
+			if (dynClass) clz += ' ' + dynClass;
+		}
+		// Get field rendering
 		let [nodeRender, htmlRender, txtRender] = getFormatters(meta);
+		// Render node
 		let node = null;
 		if (nodeRender) node = nodeRender(h, fld, meta);
 		if (!node && htmlRender) {
@@ -21,6 +29,12 @@ export default {
 	}
 };
 
+function getMetaProp(meta, prop) {
+	if (meta[prop]) return meta[prop];
+	let type = meta.type ? meta.type : 'string';
+	let thandler = typeHandlers[type];
+	return thandler[prop];
+}
 
 function getNestedField(obj, path) {
 	return path.split('.').reduce(
@@ -30,15 +44,10 @@ function getNestedField(obj, path) {
 }
 
 function getFormatters(meta) {
-	let cellRenderNode = null;
-	let cellRenderHTML = null;
-	let cellRender = null;
-	if (meta) {
-		cellRenderNode = meta.cellRenderNode;
-		cellRenderHTML = meta.cellRenderHTML;
-		cellRender = meta.cellRender;
-	}
-	let type = meta && meta.type ? meta.type : 'string';
+	let cellRenderNode = meta.cellRenderNode;
+	let cellRenderHTML = meta.cellRenderHTML;
+	let cellRender = meta.cellRender;
+	let type = meta.type ? meta.type : 'string';
 	let thandler = typeHandlers[type];
 	cellRenderNode = cellRenderNode || thandler.cellRenderNode;
 	cellRenderHTML = cellRenderHTML || thandler.cellRenderHTML;

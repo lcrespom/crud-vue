@@ -37,7 +37,8 @@ export default {
 		},
 		meta: {
 			birth: {
-				type: 'date'
+				type: 'date',
+				cellClass: dt => new Date(dt).getFullYear() < 2000 ? 'text-danger' : ''
 			},
 			death: {
 				type: 'date'
@@ -112,4 +113,5 @@ export default {
 				Whenever possible, use the cellRenderNode alternative instead.
 		- cellRenderNode: custom cell rendering function that returns a
 			virtual DOM node.
+		- cellClass: custom function to compute cell class from cell value
 */
