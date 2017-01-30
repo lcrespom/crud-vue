@@ -8,8 +8,10 @@
 		<template v-else-if="cfg">
 			<!-- Table -->
 			<template v-if="routerData.mode == 'table'">
-				<h2 class="entity-title">{{cfg.title}}</h2>
-				<crud-top-table-buttons :route="routerData.route"/>
+				<div class="entity-title-box">
+					<h2 class="entity-title">{{cfg.title}}</h2>
+					<crud-top-table-buttons :route="routerData.route"/>
+				</div>
 				<crud-table :config="cfg.table" :data="tableData" @edit="editRow" @remove="removeRow" />
 			</template>
 			<!-- Form -->
@@ -131,6 +133,9 @@ export default container;
 <style>
 .entity-title {
 	display: inline;
+}
+.entity-title-box {
+	margin-bottom: 1em;
 }
 .table-title-buttons {
 	float: right;

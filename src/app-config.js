@@ -86,23 +86,21 @@ export default {
 	- title (string): entity title.
 		If not present, the capitalized route is used.
 
-	- tableFields (array): fields to be used in table
-	- tableLables (array): labels to be used in table.
-		If not present, fields are capitalized and used as labels.
-
-	- formFields (array): fields to be used in form
-	- formLables (array): labels to be used in form.
-		If not present, fields are capitalized and used as labels.
+	- fields (array): fields to be used in table and form when not present in their
+		respective sections.
+	- lables (array): labels to be used in table and form when not present in their
+		respective sections. Labels are optional, and if not found, fields are
+		capitalized and used as labels.
 
 	- table:
-		- fields (array): fields to be used in table when tableFields are not present
-		- labels (array): labels to be used in table when tableLables are not present
+		- fields (array): fields to be used in table
+		- labels (array): labels to be used in table
 		- buttons (array): buttons to be used in table
 		- hdrClasses (array): classes to apply to header cells
 		- cellClasses (array): classes to apply to data cells
 	- form:
-		- fields (array): fields to be used in form when formFields are not present
-		- labels (array): labels to be used in form when formLables are not present
+		- fields (array): fields to be used in form
+		- labels (array): labels to be used in form
 
 	- Field meta:
 		- type: string, date, time, email, select, or custom-registered type handler
