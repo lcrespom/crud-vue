@@ -5,7 +5,7 @@
 		</colgroup>
 		<thead>
 			<tr>
-				<th v-if="hasButtons" class="text-center action-col">Action</th>
+				<th v-if="hasButtons" class="text-center">Action</th>
 				<th v-for="col of config.labels">{{col}}</th>
 			</tr>
 		</thead>
