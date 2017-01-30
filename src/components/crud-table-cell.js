@@ -4,10 +4,12 @@ import typeHandlers from '../utils/types';
 export default {
 	functional: true,
 	props: ['row', 'col', 'meta'],
-	render: function (h, context) {
-		let props = context.props;
-		let fld = getNestedField(props.row, props.col);
-		let text = getFormattedField(fld, props.meta[props.col]);
+	render: function (h, ctx) {
+		let meta = ctx.props.meta[ctx.props.col];
+		let fld = getNestedField(ctx.props.row, ctx.props.col);
+		let [txtRender/*, htmlRender*/] = getFormatters(meta);
+		// ToDo: if cellRenderHTML exists, use it. If it returns null, use cellRender.
+		let text = txtRender(fld, meta);
 		return h('td', text);
 	}
 };
@@ -20,7 +22,7 @@ function getNestedField(obj, path) {
 	);
 }
 
-function getFormattedField(fld, meta) {
+function getFormatters(meta) {
 	let cellRender = null;
 	let cellRenderHTML = null;
 	if (meta) {
@@ -33,6 +35,5 @@ function getFormattedField(fld, meta) {
 		cellRender = cellRender || thandler.cellRender || (str => str);
 		cellRenderHTML = cellRenderHTML || thandler.cellRenderHTML;
 	}
-	// ToDo: if cellRenderHTML exists, use it. If it returns null, use cellRender.
-	return cellRender(fld, meta);
+	return [cellRender, cellRenderHTML];
 }
