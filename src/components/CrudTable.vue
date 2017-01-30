@@ -20,9 +20,8 @@
 						<span /> <!-- some breathing space between buttons -->
 					</template>
 				</td>
-				<template v-for="col of config.fields">
-					<td>{{getField(row, col)}}</td>
-				</template>
+				<crud-table-cell v-for="col of config.fields"
+					:row="row" :col="col" :meta="config.meta" />
 			</tr>
 		</tbody>
 	</table>
@@ -30,26 +29,11 @@
 
 <script>
 import { validateTypes } from '../utils/cmp-helpers';
-import typeHandlers from '../utils/types';
-
-
-function getNestedField(obj, path) {
-	return path.split('.').reduce(
-		(prev, curr) => prev ? prev[curr] : undefined,
-		obj
-	);
-}
-
-function getFormattedField(fld, meta) {
-	if (meta && meta.cellRender)
-		return meta.cellRender(fld);
-	let type = meta && meta.type ? meta.type : 'string';
-	let thandler = typeHandlers[type];
-	return thandler.cellRender(fld, meta);
-}
+import CrudTableCell from './crud-table-cell';
 
 
 export default {
+	components: { CrudTableCell },
 	props: {
 		data: Array,
 		config: {
@@ -74,11 +58,7 @@ export default {
 	methods: {
 		action(event, row) {
 			this.$emit(event, row);
-		},
-		getField(row, col) {
-			let fld = getNestedField(row, col);
-			return getFormattedField(fld, this.config.meta[col]);
-		},
+		}
 	},
 
 	helpers: {
