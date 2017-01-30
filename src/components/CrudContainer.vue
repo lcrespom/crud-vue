@@ -7,19 +7,9 @@
 		<!-- Route found -->
 		<template v-else-if="cfg">
 			<!-- Table -->
-			<template v-if="editMode == 'table'">
+			<template v-if="routerData.mode == 'table'">
 				<h2 class="entity-title">{{cfg.title}}</h2>
-				<span class="table-title-buttons">
-					<button accesskey="B" class="btn btn-info">
-						<span aria-hidden="true" class="glyphicon glyphicon-search"></span>
-						Search
-					</button>
-					&nbsp;
-					<a class="btn btn-primary" @click="newRow" :href="routerData.route + '/new'">
-						<span aria-hidden="true" class="glyphicon glyphicon-plus"></span>
-						New
-					</a>
-				</span>
+				<crud-top-table-buttons :route="routerData.route"/>
 				<crud-table :config="cfg.table" :data="tableData" @edit="editRow" @remove="removeRow" />
 			</template>
 			<!-- Form -->
@@ -74,16 +64,7 @@ function prepareConfig(config) {
 	}
 }
 
-function getEditMode(config, route) {
-	let parts = route.split('/');
-	let end = parts.pop();
-	let prev = parts.pop();
-	if (end == 'new') return [prev, 'form-new'];
-	if (prev && config[prev]) return [prev, 'form-edit', end];
-	return [end, 'table'];
-}
-
-function runApi(cfg, route, vm, id) {
+function runApi(cfg, route, vm, mode, id) {
 	if (!cfg) return;
 	let api = cfg.api.handler;
 	console.log(`>>> api.getAll('${route}')`);
@@ -94,23 +75,44 @@ function runApi(cfg, route, vm, id) {
 }
 
 
+let CrudTopTableButtons = {
+	template: `
+		<span class="table-title-buttons">
+			<button accesskey="B" class="btn btn-info">
+				<span aria-hidden="true" class="glyphicon glyphicon-search"></span>
+				Search
+			</button>
+			&nbsp;
+			<a class="btn btn-primary" @click="newRow" :href="route + '/new'">
+				<span aria-hidden="true" class="glyphicon glyphicon-plus"></span>
+				New
+			</a>
+		</span>
+	`,
+	props: ['route'],
+	methods: {
+		newRow(event) {
+			setRoute(event, this.route + '/new');
+		}
+	}
+};
+
+
 const container = {
-	components: { CrudTable },
+	components: { CrudTable, CrudTopTableButtons },
 	props: ['config'],
 	created() {
 		prepareConfig(this.config);
 	},
 	data: _ => ({
 		routerData,
-		tableData: [],
-		editMode: ''
+		tableData: []
 	}),
 	computed: {
 		cfg() {
-			let [route, mode, id] = getEditMode(this.config, this.routerData.route);
-			this.editMode = mode;
-			let cfg = this.config[route];
-			runApi(cfg, route, this, id);
+			let rdata = this.routerData;
+			let cfg = this.config[rdata.routeName];
+			runApi(cfg, rdata.route, this, rdata.mode, rdata.extra);
 			return cfg;
 		}
 	},
@@ -120,9 +122,6 @@ const container = {
 		},
 		removeRow(row) {
 			console.log('Remove:', JSON.stringify(row, null, 2));
-		},
-		newRow(event) {
-			setRoute(event, this.routerData.route + '/new');
 		}
 	}
 };
