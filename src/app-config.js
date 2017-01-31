@@ -1,5 +1,6 @@
 import CrudTable from './components/CrudTable';
 let { editButton, removeButton } = CrudTable.helpers;
+import { TextAreaComponent } from './components/crud-input';
 
 
 export default {
@@ -26,6 +27,9 @@ export default {
 					{ value: 'WE', label: 'Western' },
 					{ value: 'MY', label: 'Mystery' }
 				]
+			},
+			synopsis: {
+				component: TextAreaComponent
 			}
 		}
 	},
@@ -109,7 +113,9 @@ export default {
 		- labels (array): labels to be used in form
 
 	- Field meta:
-		- type: string, date, time, email, select, or custom-registered type handler
+		- type: string, date, time, email, select, or custom-registered type handler.
+			Types are a way to reuse common meta rules: if a rule is not found in
+			the "meta" structure, it is searched in the type.
 		- listData: array of value/label pairs used by the 'select' type
 		- cellRender: custom cell rendering function. Returns plain text.
 		- cellRenderHTML: custom cell rendering function that returns HTML.
@@ -119,4 +125,5 @@ export default {
 		- cellRenderNode: custom cell rendering function that returns a
 			virtual DOM node.
 		- cellClass: custom function to compute cell class from cell value
+		- component: Vue component used to render the input in a form
 */

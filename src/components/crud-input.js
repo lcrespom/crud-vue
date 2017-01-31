@@ -6,7 +6,7 @@ function emitInput(evt) {
 	this.$emit('input', evt.target.value);
 }
 
-const InputComponent = {
+export const InputComponent = {
 	template: '<input class="form-control" :value="data" @input="emitInput">',
 	props: ['data'],
 	methods: { emitInput }
@@ -24,6 +24,11 @@ export const SelectComponent = {
 	methods: { emitInput }
 };
 
+export const TextAreaComponent = {
+	template: '<textarea class="form-control" @input="emitInput">{{data}}</textarea>',
+	props: ['data'],
+	methods: { emitInput }
+};
 
 export default {
 	functional: true,
