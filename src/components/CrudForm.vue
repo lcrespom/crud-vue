@@ -5,7 +5,8 @@
 			<label class="col-sm-3 control-label">{{config.labels[idx]}}</label>
 			<div class="col-sm-9">
 				<!--<input class="form-control" v-model="data[field]">-->
-				<crud-input :data="data" :field="field" :config="config" />
+				<crud-input :data="data" :field="field" :config="config"
+					:focus="idx == 0" />
 			</div>
 		</div>
 		</template>

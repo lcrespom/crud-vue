@@ -47,6 +47,7 @@ function getTitle(mode, cfg) {
 
 function runApi(cfg, route, vm, mode, id) {
 	if (!cfg) return;
+	if (mode != 'table') return;
 	let api = cfg.api.handler;
 	console.log(`>>> api.getAll('${route}')`);
 	vm.tableData = [];

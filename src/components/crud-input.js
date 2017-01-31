@@ -1,5 +1,7 @@
 import { getNestedField, setNestedField } from '../utils/cmp-helpers';
 import { getMetaProp } from '../utils/config';
+import typeHandlers from '../utils/types';
+
 
 function emitInput(evt) {
 	if (evt.target.composing) return;
@@ -31,18 +33,30 @@ export const TextAreaComponent = {
 };
 
 export default {
-	functional: true,
-	props: ['data', 'field', 'config'],
-	render: function (h, ctx) {
-		let fld = getNestedField(ctx.props.data, ctx.props.field);
-		let meta = ctx.props.config.meta[ctx.props.field] || {};
+	props: ['data', 'field', 'config', 'focus'],
+	mounted() {
+		if (this.focus || this.fokus) this.$el.focus();
+	},
+	data() {
+		return { fokus: false };
+	},
+	render(h) {
+		let fld = getNestedField(this.data, this.field);
+		let meta = this.config.meta[this.field] || {};
+		this.fokus = this.fokus || getMetaProp(meta, 'focus');
 		let cmp = getMetaProp(meta, 'component') || InputComponent;
 		return h(cmp, {
 			props: { data: _toString(fld), meta },
-			on: { input: v => setNestedField(ctx.props.data, ctx.props.field, v) }
+			attrs: getAttrs(meta.attrs, meta.type || 'string'),
+			on: { input: v => setNestedField(this.data, this.field, v) }
 		});
 	}
 };
+
+function getAttrs(cfgAttrs, type) {
+	let thandler = typeHandlers[type];
+	return Object.assign(thandler.attrs || {}, cfgAttrs);
+}
 
 function _toString(val) {
 	return val == null
@@ -51,19 +65,3 @@ function _toString(val) {
 			? JSON.stringify(val, null, 2)
 			: String(val);
 }
-
-
-/* select:
-<select class="form-control" name="ride_driver">
-	<option value=""></option>
-	<option value="2">
-		María García - 23
-	</option><option value="4">
-		Andrés Ríos - 23
-	</option><option value="1">
-		Miguel Pérez - 32
-	</option><option value="3">
-		Raúl Ramírez - 53
-	</option>
-</select>
-*/

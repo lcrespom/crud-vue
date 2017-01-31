@@ -126,4 +126,6 @@ export default {
 			virtual DOM node.
 		- cellClass: custom function to compute cell class from cell value
 		- component: Vue component used to render the input in a form
+		- focus: focus on form input (defaults to first input in form)
+		- attrs: attributes to be applied to the form input for this field
 */

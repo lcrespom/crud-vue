@@ -55,9 +55,10 @@ For detailed explanation on how things work, checkout the [guide](http://vuejs-t
 		- ~~Select~~
 		- Date (table: done, form: pending)
 		- etc
-	- `inputAttrs` for passing attributes to the form input, e.g. readonly, etc.
-	- Autofocus
+	- ~~`attrs` for passing attributes to the form input, e.g. readonly, etc.~~
+	- ~~Autofocus~~
 	- custom validation
+	- Form sections for grouping with `<fieldset>`
 	- ~~Computed fields, used in table column and readonly~~
 	- ~~Nested fields, e.g. author.name.first~~
 	- ~~HTML cell rendering for validated data (e.g. e-mail with `<a href="mailto:...">`)~~
