@@ -41,7 +41,7 @@ export function prepareConfig(config) {
 	}
 }
 
-export function getMetaProp(meta, prop) {
+export function getMetaProp(meta = {}, prop) {
 	if (meta[prop]) return meta[prop];
 	let type = meta.type ? meta.type : 'string';
 	let thandler = typeHandlers[type];

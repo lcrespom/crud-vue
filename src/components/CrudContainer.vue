@@ -90,7 +90,8 @@ const container = {
 			let rdata = this.routerData;
 			let cfg = this.config[rdata.routeName];
 			runApi(cfg, rdata.route, this, rdata.mode, rdata.extra);
-			this.title = getTitle(rdata.mode, cfg);
+			if (cfg)
+				this.title = getTitle(rdata.mode, cfg);
 			return cfg;
 		}
 	},
