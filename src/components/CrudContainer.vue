@@ -10,7 +10,7 @@
 			<template v-if="routerData.mode == 'table'">
 				<div class="entity-title-box">
 					<h2 class="entity-title">{{title}}</h2>
-					<crud-top-table-buttons :route="routerData.route"/>
+					<crud-top-table-buttons @new="newRow"/>
 				</div>
 				<crud-table :config="cfg.table" :data="tableData" @edit="editRow" @remove="removeRow" />
 			</template>
@@ -64,18 +64,12 @@ let CrudTopTableButtons = {
 				Search
 			</button>
 			&nbsp;
-			<a class="btn btn-primary" @click="newRow" :href="route + '/new'">
+			<a class="btn btn-primary" @click="$emit('new')">
 				<span aria-hidden="true" class="glyphicon glyphicon-plus"></span>
 				New
 			</a>
 		</span>
-	`,
-	props: ['route'],
-	methods: {
-		newRow(event) {
-			setRoute(event, this.route + '/new');
-		}
-	}
+	`
 };
 
 
@@ -101,8 +95,14 @@ const container = {
 		}
 	},
 	methods: {
+		newRow(event) {
+			this.formData = {};
+			setRoute(event, this.routerData.route + '/new');
+		},
 		editRow(row) {
 			console.log('Edit:', JSON.stringify(row, null, 2));
+			this.formData = row;
+			setRoute(null, this.routerData.route + '/' + row._id);
 		},
 		removeRow(row) {
 			console.log('Remove:', JSON.stringify(row, null, 2));

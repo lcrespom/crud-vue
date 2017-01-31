@@ -6,7 +6,7 @@ export const routerData = {
 };
 
 export function setRoute(event, href) {
-	event.preventDefault();
+	if (event) event.preventDefault();
 	routerData.route = href;
 	window.history.pushState(
 		null,
@@ -14,6 +14,10 @@ export function setRoute(event, href) {
 		href
 	);
 	updateRouterData();
+}
+
+export function backRoute() {
+	window.history.back();
 }
 
 function parseRoute(route) {

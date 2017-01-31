@@ -1,10 +1,10 @@
 <template>
 	<form class="form-horizontal" @submit="submit">
-		<template v-for="label of config.labels">
+		<template v-for="(field, idx) of config.fields">
 		<div class="form-group">
-			<label class="col-sm-3 control-label">{{label}}</label>
+			<label class="col-sm-3 control-label">{{config.labels[idx]}}</label>
 			<div class="col-sm-9">
-				<input class="form-control">
+				<input class="form-control" v-model="data[field]">
 			</div>
 		</div>
 		</template>
@@ -27,6 +27,7 @@
 
 <script>
 import { validateTypes } from '../utils/cmp-helpers';
+import { backRoute } from '../utils/router';
 
 
 export default {
@@ -45,11 +46,11 @@ export default {
 	},
 	methods: {
 		cancel() {
-			console.warn('ToDo: router.back');
+			backRoute();
 		},
 		submit(event) {
-			console.warn('ToDo: submit');
 			event.preventDefault();
+			this.$emit('submit');
 		}
 	}
 };
