@@ -16,7 +16,7 @@
 			</template>
 			<!-- Form -->
 			<template v-else>
-				ToDo: Form for {{routerData.route}}
+				<crud-form :config="cfg.form" :data="formData" />
 			</template>
 		</template>
 		<!-- No route found -->
@@ -29,6 +29,7 @@ import { routerData, setRoute } from '../utils/router';
 import { ucfirst } from '../utils/cmp-helpers';
 import crudApi from '../utils/crud-api';
 import CrudTable from './CrudTable';
+import CrudForm from './CrudForm';
 
 
 function fields2labels(fields) {
@@ -101,14 +102,15 @@ let CrudTopTableButtons = {
 
 
 const container = {
-	components: { CrudTable, CrudTopTableButtons },
+	components: { CrudTable, CrudTopTableButtons, CrudForm },
 	props: ['config'],
 	created() {
 		prepareConfig(this.config);
 	},
 	data: _ => ({
 		routerData,
-		tableData: []
+		tableData: [],
+		formData: {}
 	}),
 	computed: {
 		cfg() {
