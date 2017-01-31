@@ -12,6 +12,11 @@ export default {
 			fields: 'title author genre'.split(' '),
 			buttons: [editButton, removeButton]
 		},
+		form: {
+			newTitle: 'New book',
+			editTitle: 'Edit book',
+			fields: ['title', 'author', 'genre', 'synopsis']
+		},
 		meta: {
 			genre: {
 				type: 'select',

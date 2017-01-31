@@ -9,13 +9,16 @@
 			<!-- Table -->
 			<template v-if="routerData.mode == 'table'">
 				<div class="entity-title-box">
-					<h2 class="entity-title">{{cfg.title}}</h2>
+					<h2 class="entity-title">{{title}}</h2>
 					<crud-top-table-buttons :route="routerData.route"/>
 				</div>
 				<crud-table :config="cfg.table" :data="tableData" @edit="editRow" @remove="removeRow" />
 			</template>
 			<!-- Form -->
 			<template v-else>
+				<div class="entity-title-box">
+					<h2 class="entity-title">{{title}}</h2>
+				</div>
 				<crud-form :config="cfg.form" :data="formData" />
 			</template>
 		</template>
@@ -53,17 +56,31 @@ function prepareConfig(config) {
 		cfg.title = cfg.title || ucfirst(entity);
 		// Table
 		cfg.table = cfg.table || {};
+		cfg.table.title = cfg.table.title || cfg.title;
 		cfg.table.fields = cfg.table.fields || cfg.fields;
 		cfg.table.labels = cfg.table.labels || cfg.labels || fields2labels(cfg.table.fields);
 		cfg.table.buttons = cfg.table.buttons || cfg.buttons || [];
 		// Form
 		cfg.form = cfg.form || {};
+		cfg.form.editTitle = cfg.form.editTitle || cfg.title;
+		cfg.form.newTitle = cfg.form.newTitle || cfg.title;
 		cfg.form.fields = cfg.form.fields || cfg.fields;
 		cfg.form.labels = cfg.form.labels || cfg.labels || fields2labels(cfg.form.fields);
 		// Meta
 		cfg.meta = cfg.meta || {};
 		cfg.table.meta = cfg.meta;
 		cfg.form.meta = cfg.meta;
+	}
+}
+
+function getTitle(mode, cfg) {
+	switch (mode) {
+	case 'table': return cfg.table.title;
+	case 'form-new': return cfg.form.newTitle;
+	case 'form-edit': return cfg.form.editTitle;
+	default:
+		console.error('Invalid route mode:', mode);
+		return '<ERROR>';
 	}
 }
 
@@ -110,13 +127,15 @@ const container = {
 	data: _ => ({
 		routerData,
 		tableData: [],
-		formData: {}
+		formData: {},
+		title: ''
 	}),
 	computed: {
 		cfg() {
 			let rdata = this.routerData;
 			let cfg = this.config[rdata.routeName];
 			runApi(cfg, rdata.route, this, rdata.mode, rdata.extra);
+			this.title = getTitle(rdata.mode, cfg);
 			return cfg;
 		}
 	},
