@@ -19,3 +19,10 @@ export function validateTypes(cname, pname, prop, reqs) {
 export function ucfirst(str) {
 	return str.charAt(0).toUpperCase() + str.slice(1);
 }
+
+export function getNestedField(obj, path) {
+	return path.split('.').reduce(
+		(prev, curr) => prev ? prev[curr] : undefined,
+		obj
+	);
+}

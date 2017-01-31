@@ -1,4 +1,6 @@
 import typeHandlers from '../utils/types';
+import { getNestedField } from '../utils/cmp-helpers';
+import { getMetaProp } from '../utils/config';
 
 
 export default {
@@ -16,7 +18,7 @@ export default {
 			if (dynClass) clz += ' ' + dynClass;
 		}
 		// Get field rendering
-		let [nodeRender, htmlRender, txtRender] = getFormatters(meta);
+		let [nodeRender, htmlRender, txtRender] = getCellRenderers(meta);
 		// Render node
 		let node = null;
 		if (nodeRender) node = nodeRender(h, fld, meta);
@@ -29,21 +31,7 @@ export default {
 	}
 };
 
-function getMetaProp(meta, prop) {
-	if (meta[prop]) return meta[prop];
-	let type = meta.type ? meta.type : 'string';
-	let thandler = typeHandlers[type];
-	return thandler[prop];
-}
-
-function getNestedField(obj, path) {
-	return path.split('.').reduce(
-		(prev, curr) => prev ? prev[curr] : undefined,
-		obj
-	);
-}
-
-function getFormatters(meta) {
+function getCellRenderers(meta) {
 	let cellRenderNode = meta.cellRenderNode;
 	let cellRenderHTML = meta.cellRenderHTML;
 	let cellRender = meta.cellRender;
