@@ -52,7 +52,7 @@ For detailed explanation on how things work, checkout the [guide](http://vuejs-t
 - Flexible configuration
 	- Non-string types
 		- Number
-		- Select (table: done, form: pending)
+		- ~~Select~~
 		- Date (table: done, form: pending)
 		- etc
 	- `inputAttrs` for passing attributes to the form input, e.g. readonly, etc.

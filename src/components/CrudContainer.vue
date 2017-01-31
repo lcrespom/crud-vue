@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { routerData, setRoute } from '../utils/router';
+import { routerData, setRoute, backRoute } from '../utils/router';
 import { prepareConfig } from '../utils/config';
 import CrudTable from './CrudTable';
 import CrudForm from './CrudForm';
@@ -110,6 +110,7 @@ const container = {
 		},
 		submitForm(formData) {
 			console.log('Submit:', formData);
+			backRoute();
 		}
 	}
 };

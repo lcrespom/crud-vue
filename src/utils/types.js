@@ -1,4 +1,6 @@
 import { getDateStr, getTimeStr } from './date-utils';
+import { SelectComponent } from '../components/crud-input';
+
 
 const thString = {
 	cellRender: str => str,
@@ -34,8 +36,8 @@ const thSelect = {
 		for (let item of meta.listData)
 			if (str == item.value) return item.label;
 		return '';
-
-	}
+	},
+	component: SelectComponent
 };
 
 

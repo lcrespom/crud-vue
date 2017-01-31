@@ -1,16 +1,29 @@
 import { getNestedField, setNestedField } from '../utils/cmp-helpers';
 import { getMetaProp } from '../utils/config';
 
+function emitInput(evt) {
+	if (evt.target.composing) return;
+	this.$emit('input', evt.target.value);
+}
+
 const InputComponent = {
 	template: '<input class="form-control" :value="data" @input="emitInput">',
 	props: ['data'],
-	methods: {
-		emitInput(evt) {
-			if (evt.target.composing) return;
-			this.$emit('input', evt.target.value);
-		}
-	}
+	methods: { emitInput }
 };
+
+export const SelectComponent = {
+	template: `
+		<select class="form-control" @input="emitInput">
+			<option value=""></option>
+			<option v-for="option of meta.listData"	:value="option.value"
+				:selected="option.value == data">{{option.label}}</option>
+		</select>
+	`,
+	props: ['data', 'meta'],
+	methods: { emitInput }
+};
+
 
 export default {
 	functional: true,
@@ -20,7 +33,7 @@ export default {
 		let meta = ctx.props.config.meta[ctx.props.field] || {};
 		let cmp = getMetaProp(meta, 'component') || InputComponent;
 		return h(cmp, {
-			props: { data: _toString(fld) },
+			props: { data: _toString(fld), meta },
 			on: { input: v => setNestedField(ctx.props.data, ctx.props.field, v) }
 		});
 	}
