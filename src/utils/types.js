@@ -3,8 +3,7 @@ import { SelectComponent } from '../components/crud-input';
 
 
 const thString = {
-	cellRender: str => str,
-	inputType: 'text'
+	cellRender: str => str
 };
 
 const thDate = {
