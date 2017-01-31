@@ -19,7 +19,7 @@
 				<div class="entity-title-box">
 					<h2 class="entity-title">{{title}}</h2>
 				</div>
-				<crud-form :config="cfg.form" :data="formData" />
+				<crud-form :config="cfg.form" :data="formData" @submit="submitForm"/>
 			</template>
 		</template>
 		<!-- No route found -->
@@ -107,6 +107,9 @@ const container = {
 		},
 		removeRow(row) {
 			console.log('Remove:', JSON.stringify(row, null, 2));
+		},
+		submitForm(formData) {
+			console.log('Submit:', formData);
 		}
 	}
 };

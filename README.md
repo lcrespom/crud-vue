@@ -55,6 +55,9 @@ For detailed explanation on how things work, checkout the [guide](http://vuejs-t
 		- Select (table: done, form: pending)
 		- Date (table: done, form: pending)
 		- etc
+	- `inputAttrs` for passing attributes to the form input, e.g. readonly, etc.
+	- Autofocus
+	- custom validation
 	- ~~Computed fields, used in table column and readonly~~
 	- ~~Nested fields, e.g. author.name.first~~
 	- ~~HTML cell rendering for validated data (e.g. e-mail with `<a href="mailto:...">`)~~

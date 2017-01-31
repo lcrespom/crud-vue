@@ -1,10 +1,15 @@
-// import typeHandlers from '../utils/types';
 import { getNestedField, setNestedField } from '../utils/cmp-helpers';
 import { getMetaProp } from '../utils/config';
 
 const InputComponent = {
-	template: '<input class="form-control" v-model="data">',
-	props: ['data']
+	template: '<input class="form-control" :value="data" @input="emitInput">',
+	props: ['data'],
+	methods: {
+		emitInput(evt) {
+			if (evt.target.composing) return;
+			this.$emit('input', evt.target.value);
+		}
+	}
 };
 
 export default {
@@ -14,25 +19,10 @@ export default {
 		let fld = getNestedField(ctx.props.data, ctx.props.field);
 		let meta = ctx.props.config.meta[ctx.props.field] || {};
 		let cmp = getMetaProp(meta, 'component') || InputComponent;
-		// return h('input', {
-		// 	directives: [{
-		// 		name: "model",
-		// 		rawName: "v-model",
-		// 		value: fld,
-		// 		expression: "data[field]"
-		// 	}],
-		// 	staticClass: "form-control",
-		// 	domProps: {
-		// 		value: _toString(fld)
-		// 	},
-		// 	on: {
-		// 		input: function ($event) {
-		// 			if ($event.target.composing) return;
-		// 			let fld = $event.target.value;
-		// 			setNestedField(ctx.props.data, ctx.props.field, fld);
-		// 		}
-		// 	}
-		// });
+		return h(cmp, {
+			props: { data: _toString(fld) },
+			on: { input: v => setNestedField(ctx.props.data, ctx.props.field, v) }
+		});
 	}
 };
 

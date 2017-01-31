@@ -4,7 +4,8 @@
 		<div class="form-group">
 			<label class="col-sm-3 control-label">{{config.labels[idx]}}</label>
 			<div class="col-sm-9">
-				<input class="form-control" v-model="data[field]">
+				<!--<input class="form-control" v-model="data[field]">-->
+				<crud-input :data="data" :field="field" :config="config" />
 			</div>
 		</div>
 		</template>
@@ -28,9 +29,11 @@
 <script>
 import { validateTypes } from '../utils/cmp-helpers';
 import { backRoute } from '../utils/router';
+import CrudInput from './crud-input';
 
 
 export default {
+	components: { CrudInput },
 	props: {
 		data: Object,
 		config: {
@@ -50,7 +53,7 @@ export default {
 		},
 		submit(event) {
 			event.preventDefault();
-			this.$emit('submit');
+			this.$emit('submit', this.data);
 		}
 	}
 };
