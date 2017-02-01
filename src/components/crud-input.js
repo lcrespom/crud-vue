@@ -46,9 +46,9 @@ export default {
 		this.fokus = this.fokus || getMetaProp(meta, 'focus');
 		let cmp = getMetaProp(meta, 'component') || InputComponent;
 		return h(cmp, {
-			props: { data: _toString(fld), meta },
+			props: { data: inputRender(fld, meta), meta },
 			attrs: getAttrs(meta.attrs, meta.type || 'string'),
-			on: { input: v => setNestedField(this.data, this.field, v) }
+			on: { input: v => setNestedField(this.data, this.field, inputParse(v, meta)) }
 		});
 	}
 };
@@ -58,10 +58,14 @@ function getAttrs(cfgAttrs, type) {
 	return Object.assign(thandler.attrs || {}, cfgAttrs);
 }
 
-function _toString(val) {
-	return val == null
-		? ''
-		: typeof val === 'object'
-			? JSON.stringify(val, null, 2)
-			: String(val);
+function inputRender(val, meta) {
+	if (val == null || val == undefined) return '';
+	let render = getMetaProp(meta, 'inputRender') ||
+		getMetaProp(meta, 'cellRender') || (s => String(s));
+	return render(val, meta);
+}
+
+function inputParse(val, meta) {
+	let parse = getMetaProp(meta, 'parse') || (s => s);
+	return parse(val, meta);
 }

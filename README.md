@@ -51,10 +51,10 @@ For detailed explanation on how things work, checkout the [guide](http://vuejs-t
 - Get JSON data from json-generator.com
 - Flexible configuration
 	- Non-string types
-		- Number
+		- ~~Number~~
 		- ~~Select~~
-		- Date (table: done, form: pending)
-		- etc
+		- ~~Date~~ (test more)
+		- Time
 	- ~~`attrs` for passing attributes to the form input, e.g. readonly, etc.~~
 	- ~~Autofocus~~
 	- custom validation

@@ -42,7 +42,12 @@ export default {
 			fields: ['name.first', 'name.last', 'birth', 'death'],
 			labels: ['Name', 'Surname', 'Birth', 'Death'],
 			hdrClasses: ['', '', 'text-right', 'text-right'],
-			cellClasses: ['', '', 'text-right', 'text-right']
+			cellClasses: ['', '', 'text-right', 'text-right'],
+			buttons: [editButton]
+		},
+		form: {
+			fields: ['name.first', 'name.last', 'numTest', 'birth'],
+			labels: ['Name', 'Surname', 'Number test', 'Birth']
 		},
 		meta: {
 			birth: {
@@ -51,6 +56,9 @@ export default {
 			},
 			death: {
 				type: 'date'
+			},
+			numTest: {
+				type: 'number'
 			}
 		}
 	},
@@ -63,8 +71,7 @@ export default {
 			fields: ['name', 'email', 'phone', 'birth'],
 			labels: ['Name', 'e-mail', 'Phone', 'Birth'],
 			hdrClasses: ['', 'text-center', 'text-center', 'text-right'],
-			cellClasses: ['', 'text-center', 'text-center', 'text-right'],
-			buttons: [editButton, removeButton]
+			cellClasses: ['', 'text-center', 'text-center', 'text-right']
 		},
 		meta: {
 			name: {
@@ -124,6 +131,10 @@ export default {
 				Whenever possible, use the cellRenderNode alternative instead.
 		- cellRenderNode: custom cell rendering function that returns a
 			virtual DOM node.
+		- inputRender: custom input rendering function. When rendering input data
+			in forms, this function is used when present, otherwise cellRender is
+			used.
+		- parse: custom form input parsing function, used when reading input from user.
 		- cellClass: custom function to compute cell class from cell value
 		- component: Vue component used to render the input in a form
 		- focus: focus on form input (defaults to first input in form)

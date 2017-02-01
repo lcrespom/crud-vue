@@ -1,4 +1,4 @@
-import { getDateStr, getTimeStr } from './date-utils';
+import { getDateStr, getTimeStr, parseDateTime } from './date-utils';
 import { SelectComponent } from '../components/crud-input';
 
 
@@ -6,16 +6,23 @@ const thString = {
 	cellRender: str => str
 };
 
+const thNumber = {
+	cellRender: n => n.toLocaleString(),
+	inputRender: n => String(n),
+	attrs: { type: 'number' }
+};
+
 const thDate = {
-	cellRender(str, meta) {
-		return getDateStr(new Date(str));
-	}
+	cellRender: (str, meta) => getDateStr(new Date(str)),
+	parse: str => parseDateTime(str),
+	attrs: { type: 'date' }
 };
 
 const thTime = {
 	cellRender(str, meta) {
 		return getTimeStr(new Date(str));
 	}
+	// ToDo: implement & test attrs, parsing, etc.
 };
 
 const thEmail = {
@@ -42,6 +49,7 @@ const thSelect = {
 
 export default {
 	string: thString,
+	number: thNumber,
 	date: thDate,
 	time: thTime,
 	email: thEmail,
