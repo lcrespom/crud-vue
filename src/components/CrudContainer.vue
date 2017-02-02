@@ -64,6 +64,11 @@ function apiPut(cfg, route, data) {
 	return api.put(cfg.api, route, data);
 }
 
+function apiDelete(cfg, route, id) {
+	let api = cfg.api.handler;
+	return api.delete(cfg.api, route, id);
+}
+
 
 let CrudTopTableButtons = {
 	template: `
@@ -111,15 +116,14 @@ const container = {
 			setRoute(event, this.routerData.route + '/new');
 		},
 		editRow(row) {
-			console.log('Edit:', JSON.stringify(row, null, 2));
 			this.formData = row;
 			setRoute(null, this.routerData.route + '/' + row._id);
 		},
 		removeRow(row) {
-			console.log('Remove:', JSON.stringify(row, null, 2));
+			apiDelete(this.cfg, this.routerData.route, row._id)
+			.then(_ => this.$forceUpdate());//TODO make this work
 		},
 		submitForm(formData) {
-			console.log('Submit:', formData);
 			let apiFunc = this.routerData.mode == 'form-edit' ? apiPut : apiPost;
 			apiFunc(this.cfg, this.routerData.route, formData)
 			.then(_ => backRoute());

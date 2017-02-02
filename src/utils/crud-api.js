@@ -16,6 +16,12 @@ const crudApi = {
 		let url = getURL(apicfg, 'post', route);
 		return fetch(url + '/' + data._id, fetchInit('PUT', data))
 		.then(response => response.json());
+	},
+
+	delete(apicfg, route, id) {
+		let url = getURL(apicfg, 'post', route);
+		return fetch(url + '/' + id, { method: 'DELETE'})
+		.then(response => response.json());
 	}
 };
 
