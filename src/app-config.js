@@ -119,6 +119,8 @@ export default {
 	- form:
 		- fields (array): fields to be used in form
 		- labels (array): labels to be used in form
+		- newTitle (string): title to be used by the "New ..." form. If not present, the general title is used.
+		- editTitle (string): title to be used by the "Edit ..." form. If not present, the general title is used.
 
 	- Field meta:
 		- type: string, date, time, email, select, or custom-registered type handler.
