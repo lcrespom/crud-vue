@@ -33,24 +33,27 @@ For detailed explanation on how things work, checkout the [guide](http://vuejs-t
 	- ~~Members~~
 	- Book items
 	- Rentals (past, current, future reservations)
+	- Implement full functionality to ensure framework meets expectations
 - Setup main layout
 	- ~~Left: side menu with all tables~~
 	- Right:
 		- Table with all items + search button + new button
-		- Item edit form
+		- ~~Item edit form~~
 - Generic components
 	- ~~Menu~~
 	- ~~Table~~
-	- Form
+	- ~~Form~~
 	- Popup
 		- Loading... => open it when using the REST API
-		- Alert
-		- Confirm (yes/no)
-		- Prompt
-- Routing
-- Get JSON data from json-generator.com
+		- Confirm (yes/no) => use it to confirm delete
+		- Alert _(not required yet)_
+		- Prompt _(not required yet)_
+- ~~Routing~~
+- API backends
+	- ~~Get JSON data from json-generator.com~~
+	- ~~Get JSON data from resty~~
 - Flexible configuration
-	- Non-string types
+	- Non-string types (for table cell and form input)
 		- ~~Number~~
 		- ~~Select~~
 		- ~~Date~~ (test more)

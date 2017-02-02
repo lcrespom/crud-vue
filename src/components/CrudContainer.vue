@@ -97,11 +97,13 @@ const container = {
 		routerData,
 		tableData: [],
 		formData: {},
-		title: ''
+		title: '',
+		refreshct: 0
 	}),
 	computed: {
 		cfg() {
 			let rdata = this.routerData;
+			this.refreshct;	// This is just a trick to ensure view refresh
 			let cfg = this.config[rdata.routeName];
 			if (rdata.mode == 'table')
 				apiGetAll(cfg, rdata.route, this);
@@ -121,7 +123,7 @@ const container = {
 		},
 		removeRow(row) {
 			apiDelete(this.cfg, this.routerData.route, row._id)
-			.then(_ => this.$forceUpdate());//TODO make this work
+			.then(_ => this.refreshct++);
 		},
 		submitForm(formData) {
 			let apiFunc = this.routerData.mode == 'form-edit' ? apiPut : apiPost;
