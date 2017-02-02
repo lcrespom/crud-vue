@@ -31,7 +31,11 @@ export function setNestedField(obj, path, value) {
 	let parts = path.split('.');
 	let last = parts.pop();
 	let parent = parts.reduce(
-		(prev, curr) => prev ? prev[curr] : undefined,
+		(prev, curr) => {
+			if (prev[curr] === undefined)
+				prev[curr] = {};
+			return prev[curr];
+		},
 		obj
 	);
 	if (parent) parent[last] = value;
