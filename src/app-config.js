@@ -80,7 +80,7 @@ export default {
 		},
 		meta: {
 			name: {
-				cellRender: name => name.first + ' ' + name.last
+				cellRender: name => name ? name.first + ' ' + name.last : ''
 			},
 			birth: {
 				type: 'date'

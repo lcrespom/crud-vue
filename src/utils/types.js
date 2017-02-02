@@ -32,7 +32,8 @@ const thEmail = {
 		let parts = email.split('@');
 		let sepEmail = parts[0] + '\u200B@' + parts[1];
 		return '<a href="mailto:' + email + '" target="_blank">' + sepEmail + '</a>';
-	}
+	},
+	attrs: { type: 'email' }
 };
 
 const thSelect = {
