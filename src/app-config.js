@@ -74,6 +74,10 @@ export default {
 			hdrClasses: ['', 'text-center', 'text-center', 'text-right'],
 			cellClasses: ['', 'text-center', 'text-center', 'text-right']
 		},
+		form: {
+			fields: ['name.first', 'name.last', 'email', 'phone', 'birth'],
+			labels: ['Name', 'Surname', 'e-mail', 'Phone', 'Birth'],
+		},
 		meta: {
 			name: {
 				cellRender: name => name.first + ' ' + name.last
