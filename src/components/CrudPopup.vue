@@ -1,0 +1,287 @@
+<template>
+	<div #modalCover tabindex="-1" role="dialog" class="crud-modal"
+		:class ="{ crud-cover-open: isOpen }">
+	</div>
+	<div #modalParent tabindex="-1" role="dialog" aria-labelledby="crud-popup-label"
+		@keyup.esc="close(false)"
+		class="normal-font crud-modal">
+		<div #modalDialog class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header" :class="{ borderless: onlyMessage() }">
+					<button v-if="config.showClose || config.showOK" type="button" class="close"
+						@click="close(false)"
+						data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="crud-popup-label">{{labels.title}}</h4>
+				</div>
+				<div class="modal-body">
+					<div class="popup-message" v-html="labels.message"></div>
+					<form v-if="config.showPrompt" class="popup-prompt">
+						<input v-model="result.prompt" #prompt
+							class="popup-prompt" type="text" style="width: 100%">
+					</form>
+				</div>
+				<div class="modal-footer" :class="{ borderless: onlyMessage() }">
+					<button v-if="config.showClose" type="button"
+						@click="close(false)" #closeButton
+						class="btn btn-default popup-close" data-dismiss="modal">
+						{{labels.close}}
+					</button>
+					<button v-if="config.showOK" type="button"
+						@click="close(true)" #okButton
+						class="btn btn-primary popup-ok" data-dismiss="modal">
+						{{labels.ok}}
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</template>
+
+<script>
+
+export default {
+	data: function() {
+		return {
+			isOpen: false,
+			labels: {
+				title: 'Title',
+				message: 'Message',
+				ok: 'OK',
+				close: 'Close'
+			},
+			config: {
+				showClose: true,
+				showOK: false,
+				showPrompt: false
+			},
+			result: {
+				okPressed: false,
+				closePressed: false,
+				prompt: ''
+			}
+		}
+	},
+	methods: {
+		open() {
+			this.isOpen = true;
+			this.result.okPressed = false;
+			this.result.closePressed = false;
+			//this.modalParent.nativeElement.classList.add('bfe-modal-open');
+			//let h = this.modalDialog.nativeElement.offsetHeight;
+			//let dlgStyle = window.getComputedStyle(this.modalDialog.nativeElement);
+			//h += parseInt(dlgStyle.marginTop, 10) + parseInt(dlgStyle.marginBottom, 10);
+			//this.modalParent.nativeElement.style.height = '' + h + 'px';
+			//this.fadeCover(COVER_OPACITY);
+			return new Promise(resolve => this.closeResolve = resolve);
+		}
+	}
+};
+/*
+import { Component, ViewChild, AfterViewChecked, Input } from '@angular/core';
+import { PopupService } from './popup.service';
+
+const COVER_OPACITY = 0.2;
+
+@Component({
+	selector: 'bfe-popup',
+	templateUrl: 'popup.component.html',
+	styleUrls: ['popup.component.css']
+})
+export class PopupComponent implements AfterViewChecked {
+	@ViewChild('modalCover') modalCover;
+	@ViewChild('modalParent') modalParent;
+	@ViewChild('modalDialog') modalDialog;
+	@ViewChild('prompt') prompt;
+	@ViewChild('okButton') okButton;
+	@ViewChild('closeButton') closeButton;
+	@Input() fadeTime = 0.2;
+	activeElement: any;
+	closeResolve: (result: PopupResult) => void;
+	isOpen = false;
+	hasFocus = false;
+
+	labels: PopupLabels = {
+		title: 'Title',
+		message: 'Message',
+		ok: 'OK',
+		close: 'Close'
+	};
+
+	config: PopupConfig = {
+		showClose: true,
+		showOK: false,
+		showPrompt: false
+	};
+
+	result: PopupResult = {
+		okPressed: false,
+		closePressed: false,
+		prompt: ''
+	};
+
+	constructor(private popupSvc: PopupService) {
+		popupSvc.initialize(this);
+	}
+
+	open(): Promise<PopupResult> {
+		this.isOpen = true;
+		this.result.okPressed = false;
+		this.result.closePressed = false;
+		this.modalParent.nativeElement.classList.add('bfe-modal-open');
+		let h = this.modalDialog.nativeElement.offsetHeight;
+		let dlgStyle = window.getComputedStyle(this.modalDialog.nativeElement);
+		h += parseInt(dlgStyle.marginTop, 10) + parseInt(dlgStyle.marginBottom, 10);
+		this.modalParent.nativeElement.style.height = '' + h + 'px';
+		this.fadeCover(COVER_OPACITY);
+		return new Promise(resolve => this.closeResolve = resolve);
+	}
+
+	close(confirm: boolean) {
+		this.fadeCover(0);
+		setTimeout(_ => {
+			this.isOpen = false;
+			this.result.closePressed = !confirm;
+			this.result.okPressed = confirm;
+			this.modalParent.nativeElement.classList.remove('bfe-modal-open');
+			this.closeResolve(this.result);
+		}, this.fadeTime * 1000);
+	}
+
+	fadeCover(opacity: number) {
+		let style = this.modalCover.nativeElement.style;
+		style.transition = `opacity ${this.fadeTime}s linear`;
+		style.opacity = opacity;
+	}
+
+	onlyMessage(): boolean {
+		return !this.config.showOK
+			&& !this.config.showClose
+			&& !this.labels.title;
+	}
+
+	ngAfterViewChecked() {
+		this.checkFocus();
+	}
+
+	checkFocus() {
+		if (this.isOpen && !this.hasFocus) {
+			this.activeElement = document.activeElement;
+			this.getFocusTarget().nativeElement.focus();
+			this.hasFocus = true;
+		}
+		else if (!this.isOpen && this.hasFocus) {
+			if (this.activeElement) this.activeElement.focus();
+			this.hasFocus = false;
+		}
+	}
+
+	getFocusTarget() {
+		let target = this.modalDialog;
+		if (this.config.showPrompt)
+			target = this.prompt;
+		else if (this.config.showOK)
+			target = this.okButton;
+		else if (this.config.showClose)
+			target = this.closeButton;
+		return target;
+	}
+
+}
+
+const LOADING_POPUP_DELAY = 300;
+
+@Injectable()
+export class PopupService {
+	popup: PopupComponent;
+	initialLabels: PopupLabels;
+	initialConfig: PopupConfig;
+	loadingMsg: string = 'Loading...';
+	loadingTitle: string = '';
+
+	initialize(popup: PopupComponent) {
+		this.popup = popup;
+		this.initialLabels = Object.assign({}, popup.labels);
+		this.initialConfig = Object.assign({}, popup.config);
+	}
+
+	open(labels?: PopupLabels, config?: PopupConfig): Promise<PopupResult> {
+		Object.assign(this.popup.labels, this.initialLabels, labels);
+		Object.assign(this.popup.config, this.initialConfig, config);
+		return this.popup.open();
+	}
+
+	close(confirm: boolean) {
+		this.popup.close(confirm);
+	}
+
+	setLoadingMessage(loadingMsg: string, loadingTitle?: string) {
+		this.loadingMsg = loadingMsg;
+		this.loadingTitle = loadingTitle;
+	}
+
+	setDefaultLabels(labels: PopupLabels) {
+		Object.assign(this.initialLabels, labels);
+	}
+
+	loading(message = this.loadingMsg, title = this.loadingTitle) {
+		this.popup.isOpen = true;
+		setTimeout(_ => {
+			if (!this.popup.isOpen) return;
+			this.open(
+				{ message, title },
+				{ showClose: false, showOK: false });
+				// ,{ keyboard: false, backdrop: 'static' }
+		}, LOADING_POPUP_DELAY);
+	}
+
+	alert(message: string, title = '', close = this.initialLabels.close) {
+		return this.open(
+			{ message, title, close },
+			{ showClose: true, showOK: false }
+		);
+	}
+
+	confirm(labels: PopupLabels): Promise<PopupResult> {
+		return this.open(labels,
+			{ showOK: true, showClose: true, showPrompt: false });
+	}
+
+	prompt(labels: PopupLabels, initialValue: string): Promise<PopupResult> {
+		//TODO test
+		this.popup.result.prompt = initialValue;
+		return this.open(labels,
+			{ showOK: true, showClose: true, showPrompt: true });
+	}
+}
+*/
+</script>
+
+<style scoped>
+.crud-modal {
+	position: fixed;
+	top: 0; bottom: 0; left: 0; right: 0;
+	z-index: -1000;
+	opacity: 0;
+}
+
+.crud-cover-open {
+	display: block;
+	opacity: 0.2;
+	background-color: black;
+	z-index: 2000;
+}
+
+.crud-modal-open {
+	display: block;
+	opacity: 1;
+	margin: auto;
+	z-index: 2001;
+	outline: 0;
+}
+
+.borderless {
+	border: 0;
+}
+</style>
