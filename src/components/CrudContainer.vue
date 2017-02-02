@@ -120,11 +120,9 @@ const container = {
 		},
 		submitForm(formData) {
 			console.log('Submit:', formData);
-			if (this.routerData.mode == 'form-edit')
-				apiPut(this.cfg, this.routerData.route, formData);
-			else
-				apiPost(this.cfg, this.routerData.route, formData);
-			backRoute();
+			let apiFunc = this.routerData.mode == 'form-edit' ? apiPut : apiPost;
+			apiFunc(this.cfg, this.routerData.route, formData)
+			.then(_ => backRoute());
 		}
 	}
 };
