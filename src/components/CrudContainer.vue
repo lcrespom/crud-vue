@@ -45,15 +45,23 @@ function getTitle(mode, cfg) {
 	}
 }
 
-function runApi(cfg, route, vm, mode, id) {
+function apiGetAll(cfg, route, vm) {
 	if (!cfg) return;
-	if (mode != 'table') return;
 	let api = cfg.api.handler;
-	console.log(`>>> api.getAll('${route}')`);
 	vm.tableData = [];
 	// ToDo: open "Loading..." popup
 	api.getAll(cfg.api, route)
-	.then(json => vm.tableData = json);
+	.then(json => vm.tableData = json.data ? json.data : json);
+}
+
+function apiPost(cfg, route, data) {
+	let api = cfg.api.handler;
+	return api.post(cfg.api, route, data);
+}
+
+function apiPut(cfg, route, data) {
+	let api = cfg.api.handler;
+	return api.put(cfg.api, route, data);
 }
 
 
@@ -90,7 +98,8 @@ const container = {
 		cfg() {
 			let rdata = this.routerData;
 			let cfg = this.config[rdata.routeName];
-			runApi(cfg, rdata.route, this, rdata.mode, rdata.extra);
+			if (rdata.mode == 'table')
+				apiGetAll(cfg, rdata.route, this);
 			if (cfg)
 				this.title = getTitle(rdata.mode, cfg);
 			return cfg;
@@ -111,6 +120,10 @@ const container = {
 		},
 		submitForm(formData) {
 			console.log('Submit:', formData);
+			if (this.routerData.mode == 'form-edit')
+				apiPut(this.cfg, this.routerData.route, formData);
+			else
+				apiPost(this.cfg, this.routerData.route, formData);
 			backRoute();
 		}
 	}

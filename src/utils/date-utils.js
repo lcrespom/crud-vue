@@ -20,6 +20,7 @@ export function parseDateTime(dstr, tstr = DAY_START) {
 }
 
 export function getDateStr(d) {
+	if (!(d instanceof Date) || isNaN(d.getDate())) return '';
 	let year = '' + d.getFullYear();
 	let month = prefix0(d.getMonth() + 1);
 	let day = prefix0(d.getDate());
@@ -27,6 +28,7 @@ export function getDateStr(d) {
 }
 
 export function getTimeStr(d) {
+	if (!(d instanceof Date) || isNaN(d.getHours())) return '';
 	let hh = prefix0(d.getHours());
 	let mm = prefix0(d.getMinutes());
 	return `${hh}:${mm}`;

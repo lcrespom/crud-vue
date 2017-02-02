@@ -4,11 +4,12 @@ import { TextAreaComponent } from './components/crud-input';
 
 
 export default {
-	_apiPrefix: 'http://beta.json-generator.com/api/json/',
+	//_apiPrefix: 'http://beta.json-generator.com/api/json/',
+	_apiPrefix: 'http://localhost:3000/api/',
 	books:  {
-		api: {
-			getAll: 'get/N1V5Cxwvz'
-		},
+		// api: {
+		// 	getAll: 'get/N1V5Cxwvz'
+		// },
 		table: {
 			fields: 'title author genre'.split(' '),
 			buttons: [editButton, removeButton]
@@ -35,9 +36,9 @@ export default {
 	},
 
 	authors: {
-		api: {
-			getAll: 'get/VkaDRWPDz'
-		},
+		// api: {
+		// 	getAll: 'get/VkaDRWPDz'
+		// },
 		table: {
 			fields: ['name.first', 'name.last', 'birth', 'death'],
 			labels: ['Name', 'Surname', 'Birth', 'Death'],
@@ -64,9 +65,9 @@ export default {
 	},
 
 	members: {
-		api: {
-			getAll: 'get/EJp007vDG'
-		},
+		// api: {
+		// 	getAll: 'get/EJp007vDG'
+		// },
 		table: {
 			fields: ['name', 'email', 'phone', 'birth'],
 			labels: ['Name', 'e-mail', 'Phone', 'Birth'],
