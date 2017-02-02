@@ -1,38 +1,47 @@
 <template>
-	<div #modalCover tabindex="-1" role="dialog" class="crud-modal"
-		:class ="{ crud-cover-open: isOpen }">
-	</div>
-	<div #modalParent tabindex="-1" role="dialog" aria-labelledby="crud-popup-label"
-		@keyup.esc="close(false)"
-		class="normal-font crud-modal">
-		<div #modalDialog class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header" :class="{ borderless: onlyMessage() }">
-					<button v-if="config.showClose || config.showOK" type="button" class="close"
-						@click="close(false)"
-						data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-					<h4 class="modal-title" id="crud-popup-label">{{labels.title}}</h4>
-				</div>
-				<div class="modal-body">
-					<div class="popup-message" v-html="labels.message"></div>
-					<form v-if="config.showPrompt" class="popup-prompt">
-						<input v-model="result.prompt" #prompt
-							class="popup-prompt" type="text" style="width: 100%">
-					</form>
-				</div>
-				<div class="modal-footer" :class="{ borderless: onlyMessage() }">
-					<button v-if="config.showClose" type="button"
-						@click="close(false)" #closeButton
-						class="btn btn-default popup-close" data-dismiss="modal">
-						{{labels.close}}
-					</button>
-					<button v-if="config.showOK" type="button"
-						@click="close(true)" #okButton
-						class="btn btn-primary popup-ok" data-dismiss="modal">
-						{{labels.ok}}
-					</button>
+	<div>
+		<!-- Full page cover that disables interaction with popup background -->
+		<!-- #modalCover -->
+		<div tabindex="-1" role="dialog" class="crud-modal"
+			:class ="{ 'crud-cover-open': isOpen }">
+		</div>
+		<!-- Popup content -->
+		<!-- #modalParent -->
+		<div tabindex="-1" role="dialog" aria-labelledby="crud-popup-label"
+			@keyup.esc="close(false)"
+			class="normal-font crud-modal">
+			<!-- #modalDialog -->
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header" :class="{ borderless: onlyMessage() }">
+						<button v-if="config.showClose || config.showOK" type="button" class="close"
+							@click="close(false)"
+							data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title" id="crud-popup-label">{{labels.title}}</h4>
+					</div>
+					<div class="modal-body">
+						<div class="popup-message" v-html="labels.message"></div>
+						<form v-if="config.showPrompt" class="popup-prompt">
+							<input v-model="result.prompt" #prompt
+								class="popup-prompt" type="text" style="width: 100%">
+						</form>
+					</div>
+					<div class="modal-footer" :class="{ borderless: onlyMessage() }">
+						<!-- #closeButton -->
+						<button v-if="config.showClose" type="button"
+							@click="close(false)"
+							class="btn btn-default popup-close" data-dismiss="modal">
+							{{labels.close}}
+						</button>
+						<!-- #okButton -->
+						<button v-if="config.showOK" type="button"
+							@click="close(true)"
+							class="btn btn-primary popup-ok" data-dismiss="modal">
+							{{labels.ok}}
+						</button>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -41,7 +50,10 @@
 
 <script>
 
-export default {
+let CrudPopup = {
+	created() {
+		CrudPopup.vm = this;
+	},
 	data: function() {
 		return {
 			isOpen: false,
@@ -61,7 +73,7 @@ export default {
 				closePressed: false,
 				prompt: ''
 			}
-		}
+		};
 	},
 	methods: {
 		open() {
@@ -74,10 +86,24 @@ export default {
 			//h += parseInt(dlgStyle.marginTop, 10) + parseInt(dlgStyle.marginBottom, 10);
 			//this.modalParent.nativeElement.style.height = '' + h + 'px';
 			//this.fadeCover(COVER_OPACITY);
-			return new Promise(resolve => this.closeResolve = resolve);
-		}
+			//return new Promise(resolve => this.closeResolve = resolve);
+		},
+		close(confirm) {
+			// this.fadeCover(0);
+			// setTimeout(_ => {
+				this.isOpen = false;
+				this.result.closePressed = !confirm;
+				this.result.okPressed = confirm;
+				// this.modalParent.nativeElement.classList.remove('bfe-modal-open');
+				// this.closeResolve(this.result);
+			// }, this.fadeTime * 1000);
+		},
+		onlyMessage() {}	//ToDo
+
 	}
 };
+
+export default CrudPopup;
 /*
 import { Component, ViewChild, AfterViewChecked, Input } from '@angular/core';
 import { PopupService } from './popup.service';

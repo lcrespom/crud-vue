@@ -1,5 +1,6 @@
 <template>
 	<div id="app">
+		<crud-popup></crud-popup>
 		<!-- Top navbar -->
 		<nav class="navbar navbar-inverse navbar-static-top">
 			<div class="container-fluid">
@@ -31,6 +32,7 @@
 <script>
 import CrudMenu from './components/CrudMenu';
 import CrudContainer from './components/CrudContainer';
+import CrudPopup from './components/CrudPopup';
 import { routerData } from './utils/router';
 import appConfig from './app-config';
 
@@ -47,8 +49,13 @@ function getMenuItems() {
 export default {
 	name: 'app',
 	components: {
-		CrudMenu, CrudContainer
+		CrudMenu, CrudContainer, CrudPopup
 	},
+	// mounted() {
+	// 	let popup = CrudPopup.vm;
+	// 	popup.open();
+	// 	setTimeout(_ => popup.close(), 2000);
+	// },
 	data: _ => ({
 		menuItems: getMenuItems(),
 		appConfig,
