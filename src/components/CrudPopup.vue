@@ -1,17 +1,14 @@
 <template>
 	<div>
 		<!-- Full page cover that disables interaction with popup background -->
-		<!-- #modalCover -->
-		<div tabindex="-1" role="dialog" class="crud-modal"
+		<div tabindex="-1" role="dialog" class="crud-modal" id="crud-modal-cover"
 			:class ="{ 'crud-cover-open': isOpen }">
 		</div>
 		<!-- Popup content -->
-		<!-- #modalParent -->
 		<div tabindex="-1" role="dialog" aria-labelledby="crud-popup-label"
-			@keyup.esc="close(false)"
+			id="crud-modal-parent" @keyup.esc="close(false)"
 			class="normal-font crud-modal">
-			<!-- #modalDialog -->
-			<div class="modal-dialog" role="document">
+			<div class="modal-dialog" role="document" id="crud-modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header" :class="{ borderless: onlyMessage() }">
 						<button v-if="config.showClose || config.showOK" type="button" class="close"
@@ -49,6 +46,34 @@
 </template>
 
 <script>
+/* global Promise */
+
+const COVER_OPACITY = 0.2;
+const FADE_TIME = 0.2;
+const byId = document.getElementById.bind(document);
+
+function fadeCover(opacity, fadeTime) {
+	let modalCover = byId('crud-modal-cover');
+	modalCover.style.transition = `opacity ${fadeTime}s linear`;
+	modalCover.style.opacity = opacity;
+}
+
+function openUpdateDOM() {
+	let modalParent = byId('crud-modal-parent');
+	let modalDialog = byId('crud-modal-dialog');
+	modalParent.classList.add('crud-modal-open');
+	let h = modalDialog.offsetHeight;
+	let dlgStyle = window.getComputedStyle(modalDialog);
+	h += parseInt(dlgStyle.marginTop, 10) + parseInt(dlgStyle.marginBottom, 10);
+	modalParent.style.height = '' + h + 'px';
+	fadeCover(COVER_OPACITY, FADE_TIME);
+}
+
+function closeUpdateDOM() {
+	let modalParent = byId('crud-modal-parent');
+	modalParent.classList.remove('crud-modal-open');
+}
+
 
 let CrudPopup = {
 	created() {
@@ -80,26 +105,24 @@ let CrudPopup = {
 			this.isOpen = true;
 			this.result.okPressed = false;
 			this.result.closePressed = false;
-			//this.modalParent.nativeElement.classList.add('bfe-modal-open');
-			//let h = this.modalDialog.nativeElement.offsetHeight;
-			//let dlgStyle = window.getComputedStyle(this.modalDialog.nativeElement);
-			//h += parseInt(dlgStyle.marginTop, 10) + parseInt(dlgStyle.marginBottom, 10);
-			//this.modalParent.nativeElement.style.height = '' + h + 'px';
-			//this.fadeCover(COVER_OPACITY);
-			//return new Promise(resolve => this.closeResolve = resolve);
+			openUpdateDOM();
+			return new Promise(resolve => this.closeResolve = resolve);
 		},
 		close(confirm) {
-			// this.fadeCover(0);
-			// setTimeout(_ => {
+			fadeCover(0, FADE_TIME);
+			setTimeout(_ => {
 				this.isOpen = false;
 				this.result.closePressed = !confirm;
 				this.result.okPressed = confirm;
-				// this.modalParent.nativeElement.classList.remove('bfe-modal-open');
-				// this.closeResolve(this.result);
-			// }, this.fadeTime * 1000);
+				closeUpdateDOM();
+				this.closeResolve(this.result);
+			}, FADE_TIME * 1000);
 		},
-		onlyMessage() {}	//ToDo
-
+		onlyMessage() {
+			return !this.config.showOK
+				&& !this.config.showClose
+				&& !this.labels.title;
+		}
 	}
 };
 
