@@ -24,12 +24,19 @@ function apiGetAll(cfg, route, vm) {
 	.then(json => vm.tableData = json.data ? json.data : json);
 }
 
+const centerBig = msg => `<h3 style="text-align: center">${msg}</h3>`;
+
+const wrapREST = (method, actionTxt) => CrudPopup.helpers.wrapWithLoading(
+	(cfg, route, data) => cfg.api.handler[method](cfg.api, route, data),
+	cfg => centerBig(`${actionTxt} ${cfg.title}...`)
+);
+
 const restAPI = {
 	getAll: CrudPopup.helpers.wrapWithLoading(apiGetAll,
-		cfg => `<h3 style="text-align: center">Loading ${cfg.title}...</h3>`),
-	post: (cfg, route, data) => cfg.api.handler.post(cfg.api, route, data),
-	put: (cfg, route, data) => cfg.api.handler.put(cfg.api, route, data),
-	delete: (cfg, route, data) => cfg.api.handler.delete(cfg.api, route, data)
+		cfg => centerBig(`Loading ${cfg.title}...`)),
+	post: wrapREST('post', 'Updating'),
+	put: wrapREST('put', 'Adding'),
+	delete: wrapREST('delete', 'Deleting')
 };
 
 

@@ -97,7 +97,7 @@ let CrudPopup = {
 			return function(...params) {
 				let msgTxt = msg instanceof Function ? msg(...params) : msg;
 				CrudPopup.helpers.loading(msgTxt);
-				func(...params)
+				return func(...params)
 				.then(x => {
 					CrudPopup.vm.close();
 					return x;
