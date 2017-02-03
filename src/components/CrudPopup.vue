@@ -127,17 +127,31 @@ let CrudPopup = {
 			return !this.config.showOK
 				&& !this.config.showClose
 				&& !this.labels.title;
-		},
+		}
+	},
+	helpers: {
 		loading(message = LOADING_MSG, title = LOADING_TITLE) {
-			this.isOpen = true;
+			let vm = CrudPopup.vm;
+			vm.isOpen = true;
 			setTimeout(_ => {
-				if (!this.isOpen) return;
-				this.labels.message = message;
-				this.labels.title = title;
-				this.config.showClose = false;
-				this.config.showOK = false;
-				this.open();
+				if (!vm.isOpen) return;
+				vm.labels.message = message;
+				vm.labels.title = title;
+				vm.config.showClose = false;
+				vm.config.showOK = false;
+				vm.open();
 			}, LOADING_POPUP_DELAY);
+		},
+		wrapWithLoading(func, msg) {
+			return function(...params) {
+				let msgTxt = msg instanceof Function ? msg(...params) : msg;
+				CrudPopup.helpers.loading(msgTxt);
+				func(...params)
+				.then(x => {
+					CrudPopup.vm.close();
+					return x;
+				});
+			};
 		}
 	}
 };

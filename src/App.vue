@@ -51,11 +51,6 @@ export default {
 	components: {
 		CrudMenu, CrudContainer, CrudPopup
 	},
-	mounted() {
-		let popup = CrudPopup.vm;
-		popup.open();
-		setTimeout(_ => popup.close(), 2000);
-	},
 	data: _ => ({
 		menuItems: getMenuItems(),
 		appConfig,

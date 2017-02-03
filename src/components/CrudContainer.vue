@@ -46,39 +46,21 @@ function getTitle(mode, cfg) {
 	}
 }
 
-// function wrapWithLoading(func, msg) {
-// 	return function(...params) {
-// 		func(...params)
-// 		.then()
-// 	}
-// }
-
 function apiGetAll(cfg, route, vm) {
 	if (!cfg) return;
 	let api = cfg.api.handler;
 	vm.tableData = [];
-	CrudPopup.vm.loading(`<h3 style="text-align: center">Loading ${cfg.title}...</h3>`);
-	api.getAll(cfg.api, route)
-	.then(json => {
-		vm.tableData = json.data ? json.data : json;
-		CrudPopup.vm.close();
-	});
+	return api.getAll(cfg.api, route)
+	.then(json => vm.tableData = json.data ? json.data : json);
 }
 
-function apiPost(cfg, route, data) {
-	let api = cfg.api.handler;
-	return api.post(cfg.api, route, data);
-}
-
-function apiPut(cfg, route, data) {
-	let api = cfg.api.handler;
-	return api.put(cfg.api, route, data);
-}
-
-function apiDelete(cfg, route, id) {
-	let api = cfg.api.handler;
-	return api.delete(cfg.api, route, id);
-}
+const restAPI = {
+	getAll: CrudPopup.helpers.wrapWithLoading(apiGetAll,
+		cfg => `<h3 style="text-align: center">Loading ${cfg.title}...</h3>`),
+	post: (cfg, route, data) => cfg.api.handler.post(cfg.api, route, data),
+	put: (cfg, route, data) => cfg.api.handler.put(cfg.api, route, data),
+	delete: (cfg, route, data) => cfg.api.handler.delete(cfg.api, route, data)
+};
 
 
 let CrudTopTableButtons = {
@@ -117,7 +99,7 @@ const container = {
 			this.refreshct;	// This is just a trick to ensure view refresh
 			let cfg = this.config[rdata.routeName];
 			if (rdata.mode == 'table')
-				apiGetAll(cfg, rdata.route, this);
+				restAPI.getAll(cfg, rdata.route, this);
 			if (cfg)
 				this.title = getTitle(rdata.mode, cfg);
 			return cfg;
@@ -133,11 +115,11 @@ const container = {
 			setRoute(null, this.routerData.route + '/' + row._id);
 		},
 		removeRow(row) {
-			apiDelete(this.cfg, this.routerData.route, row._id)
+			restAPI.delete(this.cfg, this.routerData.route, row._id)
 			.then(_ => this.refreshct++);
 		},
 		submitForm(formData) {
-			let apiFunc = this.routerData.mode == 'form-edit' ? apiPut : apiPost;
+			let apiFunc = this.routerData.mode == 'form-edit' ? restAPI.put : restAPI.post;
 			apiFunc(this.cfg, this.routerData.route, formData)
 			.then(_ => backRoute());
 		}
