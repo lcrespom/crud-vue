@@ -92,8 +92,12 @@ const container = {
 			setRoute(null, this.routerData.route + '/' + row._id);
 		},
 		removeRow(row) {
-			restAPI.delete(this.cfg, this.routerData.route, row._id)
-			.then(_ => this.refreshct++);
+			CrudPopup.helpers.confirm('Do you really want to delete?', 'Warning')
+			.then(result => {
+				if (result.okPressed)
+					restAPI.delete(this.cfg, this.routerData.route, row._id)
+					.then(_ => this.refreshct++);
+			});
 		},
 		submitForm(formData) {
 			let apiFunc = this.routerData.mode == 'form-edit' ? restAPI.put : restAPI.post;

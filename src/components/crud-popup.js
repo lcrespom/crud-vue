@@ -104,6 +104,27 @@ let CrudPopup = {
 					return x;
 				});
 			};
+		},
+		alert(message, title, closeTxt) {
+			let vm = CrudPopup.vm;
+			if (message) vm.labels.message = message;
+			if (title) vm.labels.title;
+			if (closeTxt) vm.labels.close = closeTxt;
+			vm.config.showClose = true;
+			vm.config.showOK = false;
+			vm.config.showPrompt = false;
+			return vm.open();
+		},
+		confirm(message, title, okTxt, closeTxt) {
+			let vm = CrudPopup.vm;
+			if (message) vm.labels.message = message;
+			if (title) vm.labels.title;
+			if (okTxt) vm.labels.ok = okTxt;
+			if (closeTxt) vm.labels.close = closeTxt;
+			vm.config.showOK = true;
+			vm.config.showClose = true;
+			vm.config.showPrompt = false;
+			return vm.open();
 		}
 	}
 };
