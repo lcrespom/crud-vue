@@ -51,7 +51,7 @@ For detailed explanation on how things work, checkout the [guide](http://vuejs-t
 		- Keyboard support + focus management
 		- Prompt _(not required yet)_
 - ~~Routing~~
-- API backends
+- ~~API backends~~
 	- ~~Get JSON data from json-generator.com~~
 	- ~~Get JSON data from resty~~
 - Flexible configuration
@@ -62,7 +62,7 @@ For detailed explanation on how things work, checkout the [guide](http://vuejs-t
 		- Time
 	- ~~`attrs` for passing attributes to the form input, e.g. readonly, etc.~~
 	- ~~Autofocus~~
-	- custom validation
+	- Custom validation
 	- Form sections for grouping with `<fieldset>`
 	- ~~Computed fields, used in table column and readonly~~
 	- ~~Nested fields, e.g. author.name.first~~
