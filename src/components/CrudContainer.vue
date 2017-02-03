@@ -32,6 +32,7 @@ import { routerData, setRoute, backRoute } from '../utils/router';
 import { prepareConfig } from '../utils/config';
 import CrudTable from './CrudTable';
 import CrudForm from './CrudForm';
+import CrudPopup from './CrudPopup';
 
 
 function getTitle(mode, cfg) {
@@ -45,13 +46,23 @@ function getTitle(mode, cfg) {
 	}
 }
 
+// function wrapWithLoading(func, msg) {
+// 	return function(...params) {
+// 		func(...params)
+// 		.then()
+// 	}
+// }
+
 function apiGetAll(cfg, route, vm) {
 	if (!cfg) return;
 	let api = cfg.api.handler;
 	vm.tableData = [];
-	// ToDo: open "Loading..." popup
+	CrudPopup.vm.loading(`<h3 style="text-align: center">Loading ${cfg.title}...</h3>`);
 	api.getAll(cfg.api, route)
-	.then(json => vm.tableData = json.data ? json.data : json);
+	.then(json => {
+		vm.tableData = json.data ? json.data : json;
+		CrudPopup.vm.close();
+	});
 }
 
 function apiPost(cfg, route, data) {

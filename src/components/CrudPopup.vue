@@ -50,7 +50,12 @@
 
 const COVER_OPACITY = 0.2;
 const FADE_TIME = 0.2;
+const LOADING_POPUP_DELAY = 300;
+const LOADING_MSG = '<h3 style="text-align: center">Loading...</h3>';
+const LOADING_TITLE = '';
+
 const byId = document.getElementById.bind(document);
+
 
 function fadeCover(opacity, fadeTime) {
 	let modalCover = byId('crud-modal-cover');
@@ -122,6 +127,17 @@ let CrudPopup = {
 			return !this.config.showOK
 				&& !this.config.showClose
 				&& !this.labels.title;
+		},
+		loading(message = LOADING_MSG, title = LOADING_TITLE) {
+			this.isOpen = true;
+			setTimeout(_ => {
+				if (!this.isOpen) return;
+				this.labels.message = message;
+				this.labels.title = title;
+				this.config.showClose = false;
+				this.config.showOK = false;
+				this.open();
+			}, LOADING_POPUP_DELAY);
 		}
 	}
 };
