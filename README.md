@@ -48,6 +48,7 @@ For detailed explanation on how things work, checkout the [guide](http://vuejs-t
 		- ~~Loading... => open it when using the REST API~~
 		- ~~Confirm (yes/no) => use it to confirm delete~~
 		- ~~Alert~~
+		- Keyboard support + focus management
 		- Prompt _(not required yet)_
 - ~~Routing~~
 - API backends
