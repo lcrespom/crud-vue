@@ -1,6 +1,12 @@
 # crud-vue
 
-> Generic CRUD with Vue
+Generic CRUD framework implemented with [Vue.js](https://vuejs.org/).
+
+The framework provides a set of components that generate all the UI for Creating, Reading, Updating and Deleting any server-side data via any REST API. The data structures are described through a configuration object, and the framework dynamically generates all the UI tables, forms, widgets, etc., for manipulating the data.
+
+See file src/app-config.js for a configuration example along with the description of all the possible configuration options. That file is the only non-generic code in the whole application.
+
+To play with it, you can use [Resty](https://github.com/lcrespom/resty.git), which is a simple REST API server that writes its data to plain JSON files.
 
 ## Build Setup
 
@@ -24,7 +30,8 @@ npm run e2e
 npm test
 ```
 
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+The structure of this project is derived from [vue-cli] (https://github.com/vuejs/vue-cli).
+
 
 ## ToDo
 - Implement example library
