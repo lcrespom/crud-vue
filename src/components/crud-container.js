@@ -34,8 +34,8 @@ const wrapREST = (method, actionTxt) => CrudPopup.helpers.wrapWithLoading(
 const restAPI = {
 	getAll: CrudPopup.helpers.wrapWithLoading(apiGetAll,
 		cfg => centerBig(`Loading ${cfg.title}...`)),
-	post: wrapREST('post', 'Updating'),
-	put: wrapREST('put', 'Adding'),
+	post: wrapREST('post', 'Adding'),
+	put: wrapREST('put', 'Updating'),
 	delete: wrapREST('delete', 'Deleting')
 };
 

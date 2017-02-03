@@ -2,7 +2,7 @@
 	<div>
 		<!-- Full page cover that disables interaction with popup background -->
 		<div tabindex="-1" role="dialog" class="crud-modal" id="crud-modal-cover"
-			:class ="{ 'crud-cover-open': isOpen }">
+			:class ="{ 'crud-cover-open': isCoverOpen }">
 		</div>
 		<!-- Popup content -->
 		<div tabindex="-1" role="dialog" aria-labelledby="crud-popup-label"

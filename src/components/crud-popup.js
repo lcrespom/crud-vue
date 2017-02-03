@@ -38,6 +38,7 @@ let CrudPopup = {
 	data: function() {
 		return {
 			isOpen: false,
+			isCoverOpen: false,
 			labels: {
 				title: 'Title',
 				message: 'Message',
@@ -59,6 +60,7 @@ let CrudPopup = {
 	methods: {
 		open() {
 			this.isOpen = true;
+			this.isCoverOpen = true;
 			this.result.okPressed = false;
 			this.result.closePressed = false;
 			openUpdateDOM();
@@ -66,13 +68,12 @@ let CrudPopup = {
 		},
 		close(confirm) {
 			fadeCover(0, FADE_TIME);
-			setTimeout(_ => {
-				this.isOpen = false;
-				this.result.closePressed = !confirm;
-				this.result.okPressed = confirm;
-				closeUpdateDOM();
-				this.closeResolve(this.result);
-			}, FADE_TIME * 1000);
+			setTimeout(_ => this.isCoverOpen = false, FADE_TIME * 1000);
+			this.isOpen = false;
+			this.result.closePressed = !confirm;
+			this.result.okPressed = confirm;
+			closeUpdateDOM();
+			this.closeResolve(this.result);
 		},
 		onlyMessage() {
 			return !this.config.showOK
