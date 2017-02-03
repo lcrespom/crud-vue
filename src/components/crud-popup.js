@@ -8,6 +8,8 @@ const LOADING_TITLE = '';
 const byId = document.getElementById.bind(document);
 
 
+//-------------------- DOM Manipulation --------------------
+
 function fadeCover(opacity, fadeTime) {
 	let modalCover = byId('crud-modal-cover');
 	modalCover.style.transition = `opacity ${fadeTime}s linear`;
@@ -31,9 +33,57 @@ function closeUpdateDOM() {
 }
 
 
+//-------------------- Focus management --------------------
+
+function getFocusTarget() {
+	let vm = CrudPopup.vm;
+	if (vm.config.showPrompt)
+		return byId('crud-popup-prompt');
+	else if (vm.config.showOK)
+		return byId('crud-popup-ok');
+	else if (vm.config.showClose)
+		return byId('crud-popup-close');
+	return byId('crud-modal-dialog');;
+}
+
+function checkFocus() {
+	let vm = CrudPopup.vm;
+	if (vm.isOpen && !vm.hasFocus) {
+		vm.activeElement = document.activeElement;
+		getFocusTarget().focus();
+		vm.hasFocus = true;
+	}
+	else if (!vm.isOpen && vm.hasFocus) {
+		if (vm.activeElement) vm.activeElement.focus();
+		vm.hasFocus = false;
+	}
+}
+
+
+//-------------------- Config helpers --------------------
+
+function setMessages(msg, title, ok, close) {
+	let vm = CrudPopup.vm;
+	if (msg) vm.labels.message = msg;
+	if (title) vm.labels.title = title;
+	if (ok) vm.labels.ok = ok;
+	if (close) vm.labels.close = close;
+}
+
+function setConfig(showOK, showClose, showPrompt) {
+	let vm = CrudPopup.vm;
+	vm.config.showOK = showOK;
+	vm.config.showClose = showClose;
+	vm.config.showPrompt = showPrompt;
+}
+
+
 let CrudPopup = {
 	created() {
 		CrudPopup.vm = this;
+	},
+	updated() {
+		checkFocus();
 	},
 	data: function() {
 		return {
@@ -68,12 +118,12 @@ let CrudPopup = {
 		},
 		close(confirm) {
 			fadeCover(0, FADE_TIME);
-			setTimeout(_ => this.isCoverOpen = false, FADE_TIME * 1000);
+			setTimeout(_ => this.isCoverOpen = this.isOpen, FADE_TIME * 1000);
 			this.isOpen = false;
 			this.result.closePressed = !confirm;
 			this.result.okPressed = confirm;
 			closeUpdateDOM();
-			this.closeResolve(this.result);
+			if (this.closeResolve) this.closeResolve(this.result);
 		},
 		onlyMessage() {
 			return !this.config.showOK
@@ -89,8 +139,7 @@ let CrudPopup = {
 				if (!vm.isOpen) return;
 				vm.labels.message = message;
 				vm.labels.title = title;
-				vm.config.showClose = false;
-				vm.config.showOK = false;
+				setConfig(false, false, false);
 				vm.open();
 			}, LOADING_POPUP_DELAY);
 		},
@@ -106,27 +155,20 @@ let CrudPopup = {
 			};
 		},
 		alert(message, title, closeTxt) {
-			this.setMessages(message, title, null, closeTxt);
-			this.setConfig(false, true, false);
+			setMessages(message, title, null, closeTxt);
+			setConfig(false, true, false);
 			return CrudPopup.vm.open();
 		},
 		confirm(message, title, okTxt, closeTxt) {
-			this.setMessages(message, title, okTxt, closeTxt);
-			this.setConfig(true, true, false);
+			setMessages(message, title, okTxt, closeTxt);
+			setConfig(true, true, false);
 			return CrudPopup.vm.open();
 		},
-		setMessages(msg, title, ok, close) {
-			let vm = CrudPopup.vm;
-			if (msg) vm.labels.message = msg;
-			if (title) vm.labels.title = title;
-			if (ok) vm.labels.ok = ok;
-			if (close) vm.labels.close = close;
-		},
-		setConfig(showOK, showClose, showPrompt) {
-			let vm = CrudPopup.vm;
-			vm.config.showOK = showOK;
-			vm.config.showClose = showClose;
-			vm.config.showPrompt = showPrompt;
+		prompt(initialValue, message, title, okTxt, closeTxt) {
+			setMessages(message, title, okTxt, closeTxt);
+			CrudPopup.vm.result.prompt = initialValue;
+			setConfig(true, true, true);
+			return CrudPopup.vm.open();
 		}
 	}
 };

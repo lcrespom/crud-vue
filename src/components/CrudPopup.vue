@@ -20,21 +20,20 @@
 					</div>
 					<div class="modal-body">
 						<div class="popup-message" v-html="labels.message"></div>
-						<form v-if="config.showPrompt" class="popup-prompt">
-							<input v-model="result.prompt" #prompt
+						<form v-if="config.showPrompt" class="popup-prompt"
+							@submit="$event.preventDefault(); close(true)">
+							<input v-model="result.prompt" id="crud-popup-prompt"
 								class="popup-prompt" type="text" style="width: 100%">
 						</form>
 					</div>
 					<div class="modal-footer" :class="{ borderless: onlyMessage() }">
-						<!-- #closeButton -->
 						<button v-if="config.showClose" type="button"
-							@click="close(false)"
+							@click="close(false)" id="crud-popup-close"
 							class="btn btn-default popup-close" data-dismiss="modal">
 							{{labels.close}}
 						</button>
-						<!-- #okButton -->
 						<button v-if="config.showOK" type="button"
-							@click="close(true)"
+							@click="close(true)" id="crud-popup-ok"
 							class="btn btn-primary popup-ok" data-dismiss="modal">
 							{{labels.ok}}
 						</button>

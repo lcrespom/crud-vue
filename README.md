@@ -48,8 +48,8 @@ For detailed explanation on how things work, checkout the [guide](http://vuejs-t
 		- ~~Loading... => open it when using the REST API~~
 		- ~~Confirm (yes/no) => use it to confirm delete~~
 		- ~~Alert~~
-		- Keyboard support + focus management
-		- Prompt _(not required yet)_
+		- ~~Keyboard support + focus management~~
+		- ~~Prompt~~
 - ~~Routing~~
 - ~~API backends~~
 	- ~~Get JSON data from json-generator.com~~
