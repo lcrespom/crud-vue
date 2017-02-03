@@ -2,7 +2,7 @@
 
 Generic CRUD framework implemented with [Vue.js](https://vuejs.org/).
 
-The framework provides a set of components that generate all the UI for Creating, Reading, Updating and Deleting any server-side data via any REST API. The data structures are described through a configuration object, and the framework dynamically generates all the UI tables, forms, widgets, etc., for manipulating the data.
+The framework provides a set of components that generate all the UI for Creating, Reading, Updating and Deleting server-side data via any REST API. The data structures are described through a configuration object, and the framework dynamically generates all the UI tables, forms, widgets, etc., for manipulating the data.
 
 See file src/app-config.js for a configuration example along with the description of all the possible configuration options. That file is the only non-generic code in the whole application.
 
