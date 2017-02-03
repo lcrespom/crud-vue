@@ -37,16 +37,17 @@ For detailed explanation on how things work, checkout the [guide](http://vuejs-t
 - Setup main layout
 	- ~~Left: side menu with all tables~~
 	- Right:
-		- Table with all items + search button + new button
 		- ~~Item edit form~~
+		- ~~Table~~
+		- Search button at top of table
 - Generic components
 	- ~~Menu~~
 	- ~~Table~~
 	- ~~Form~~
-	- Popup
-		- Loading... => open it when using the REST API
-		- Confirm (yes/no) => use it to confirm delete
-		- Alert _(not required yet)_
+	- ~~Popup~~
+		- ~~Loading... => open it when using the REST API~~
+		- ~~Confirm (yes/no) => use it to confirm delete~~
+		- ~~Alert~~
 		- Prompt _(not required yet)_
 - ~~Routing~~
 - API backends

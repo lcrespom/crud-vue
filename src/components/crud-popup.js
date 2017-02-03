@@ -106,25 +106,27 @@ let CrudPopup = {
 			};
 		},
 		alert(message, title, closeTxt) {
-			let vm = CrudPopup.vm;
-			if (message) vm.labels.message = message;
-			if (title) vm.labels.title;
-			if (closeTxt) vm.labels.close = closeTxt;
-			vm.config.showClose = true;
-			vm.config.showOK = false;
-			vm.config.showPrompt = false;
-			return vm.open();
+			this.setMessages(message, title, null, closeTxt);
+			this.setConfig(false, true, false);
+			return CrudPopup.vm.open();
 		},
 		confirm(message, title, okTxt, closeTxt) {
+			this.setMessages(message, title, okTxt, closeTxt);
+			this.setConfig(true, true, false);
+			return CrudPopup.vm.open();
+		},
+		setMessages(msg, title, ok, close) {
 			let vm = CrudPopup.vm;
-			if (message) vm.labels.message = message;
-			if (title) vm.labels.title;
-			if (okTxt) vm.labels.ok = okTxt;
-			if (closeTxt) vm.labels.close = closeTxt;
-			vm.config.showOK = true;
-			vm.config.showClose = true;
-			vm.config.showPrompt = false;
-			return vm.open();
+			if (msg) vm.labels.message = msg;
+			if (title) vm.labels.title = title;
+			if (ok) vm.labels.ok = ok;
+			if (close) vm.labels.close = close;
+		},
+		setConfig(showOK, showClose, showPrompt) {
+			let vm = CrudPopup.vm;
+			vm.config.showOK = showOK;
+			vm.config.showClose = showClose;
+			vm.config.showPrompt = showPrompt;
 		}
 	}
 };
