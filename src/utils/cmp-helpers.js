@@ -16,10 +16,6 @@ export function validateTypes(cname, pname, prop, reqs) {
 	return true;
 }
 
-export function ucfirst(str) {
-	return str.charAt(0).toUpperCase() + str.slice(1);
-}
-
 export function getNestedField(obj, path) {
 	return path.split('.').reduce(
 		(prev, curr) => prev ? prev[curr] : undefined,
@@ -39,4 +35,24 @@ export function setNestedField(obj, path, value) {
 		obj
 	);
 	if (parent) parent[last] = value;
+}
+
+
+export function ucfirst(str) {
+	return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+export function wrapAsyncFunction(before, asyncF, after) {
+	return function(...params) {
+		before(...params);
+		return asyncF(...params)
+		.then(x => {
+			after(...params);
+			return x;
+		})
+		.catch(x => {
+			after(...params);
+			throw x;
+		});
+	};
 }

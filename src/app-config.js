@@ -51,6 +51,12 @@ export default {
 			labels: ['Name', 'Surname', 'Number test', 'Birth']
 		},
 		meta: {
+			'name.first': {
+				attrs: { required: true }
+			},
+			'name.last': {
+				attrs: { required: true }
+			},
 			birth: {
 				type: 'date',
 				cellClass: dt => new Date(dt).getFullYear() < 2000 ? 'text-danger' : ''
