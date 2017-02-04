@@ -44,6 +44,7 @@ const thSelect = {
 			if (str == item.value) return item.label;
 		return '';
 	},
+	inputRender: str => str,
 	component: SelectComponent
 };
 
