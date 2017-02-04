@@ -18,11 +18,18 @@ export const SelectComponent = {
 	template: `
 		<select class="form-control" @input="emitInput">
 			<option value=""></option>
-			<option v-for="option of meta.listData"	:value="option.value"
-				:selected="option.value == data">{{option.label}}</option>
+			<option v-for="option of listData" :value="option.value"
+				:selected="option.value == rawData">{{option.label}}</option>
 		</select>
 	`,
-	props: ['data', 'meta'],
+	props: ['rawData', 'data', 'meta'],
+	computed: {
+		listData() {
+			return this.meta.listData instanceof Function
+			? this.meta.listData(this.meta)
+			: this.meta.listData;
+		}
+	},
 	methods: { emitInput }
 };
 
@@ -46,7 +53,7 @@ export default {
 		this.fokus = this.fokus || getMetaProp(meta, 'focus');
 		let cmp = getMetaProp(meta, 'component') || InputComponent;
 		return h(cmp, {
-			props: { data: inputRender(fld, meta), meta },
+			props: { rawData: fld, data: inputRender(fld, meta), meta },
 			attrs: getAttrs(meta.attrs, meta.type || 'string'),
 			on: { input: v => setNestedField(this.data, this.field, inputParse(v, meta)) }
 		});

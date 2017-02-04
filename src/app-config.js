@@ -82,6 +82,9 @@ export default {
 			name: {
 				cellRender: name => name ? name.first + ' ' + name.last : ''
 			},
+			phone: {
+				focus: true
+			},
 			birth: {
 				type: 'date'
 			},
